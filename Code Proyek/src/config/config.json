@@ -1,0 +1,10 @@
+{
+    "connection_db": {
+        "host": "127.0.0.1",
+        "username" : "root",
+        "password" : "",
+        "port" : "3306",
+        "database" : "db_proyek_ws_2023",
+        "dialect" : "mysql"
+    }
+}

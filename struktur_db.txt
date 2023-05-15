@@ -1,0 +1,21 @@
+users
+	username varchar(255)
+	password varchar(255)
+	gender varchar(255)
+	birthdate date
+	body_weight int
+	body_height int
+	target_height int
+	is_vegetarian varchar(255)
+	profile_picture file
+ 
+menu_set
+	menu_set_id varchar(255)	
+	menu_set_name varchar(255)
+	menu_content text --> diisi dengan array of menu item dan qty dari item tersebut
+
+diet
+	diet_id varchar(255)
+	diet_name varchar(255)
+	diet_content text --> diisi dengan array of menu_set dan time menu_set disajikan
+
