@@ -6,7 +6,7 @@ const login = async (req, res) => {
     
 };
 
-const updateUserdata = async (req, res) => {
+const updateUserData = async (req, res) => {
     
 };
 
@@ -44,4 +44,19 @@ const updateSchedule = async (req, res) => {
 
 const getCalories = async (req, res) => {
     
+};
+
+module.exports = {
+    register,
+    login,
+    updateUserData,
+    updatePassword,
+    topup,
+    recharge,
+    diet,
+    calculateBMI,
+    scheduleDiet,
+    getSchedule,
+    updateSchedule,
+    getCalories,
 };

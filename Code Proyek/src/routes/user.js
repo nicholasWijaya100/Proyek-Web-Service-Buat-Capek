@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   register,
   login,
-  updateUserdata,
+  updateUserData,
   updatePassword,
   topup,
   recharge,
@@ -17,7 +17,7 @@ const {
 
 router.post("/register",register);
 router.post("/login",login);
-router.patch("/update/userdata",updateUserdata);
+router.patch("/update/userdata",updateUserData);
 router.patch("/update/password",updatePassword);
 router.post("/topup",topup);
 router.post("/recharge",recharge);
@@ -25,7 +25,7 @@ router.get("/diet",diet);
 router.get("/calculate_BMI",calculateBMI);
 router.post("/schedule_diet",scheduleDiet);
 router.get("/schedule_diet",getSchedule);
-router.update("/schedule_diet",updateSchedule);
+router.put("/schedule_diet",updateSchedule);
 router.get("/calories_intake",getCalories);
 
 module.exports = router;
