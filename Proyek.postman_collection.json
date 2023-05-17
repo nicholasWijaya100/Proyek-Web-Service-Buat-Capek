@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "1184c48e-2ee8-4a7f-8428-1bb1028957ad",
+		"name": "Proyek",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25992275"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "addMenuSet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"menu_set_name\" : \"new_name\",\r\n    \"menu_list\": [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"424571\",\r\n            \"qty\" : \"1\"\r\n        },\r\n        {\r\n            \"id\" : \"419357\",\r\n            \"qty\" : \"3\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/admin/menu_set",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"menu_set"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMenu",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "addDiet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "diet_name",
+									"value": "diet1",
+									"type": "text"
+								},
+								{
+									"key": "breakfast",
+									"value": "MS001",
+									"type": "text"
+								},
+								{
+									"key": "lunch",
+									"value": "MS002",
+									"type": "text"
+								},
+								{
+									"key": "dinner",
+									"value": "MS003",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/admin/diet",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"diet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteDiet",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "getMenuSet",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "updateMenuSet",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\" : \"add\",\r\n    \"menu_id\" : [\r\n        \"192386\", \r\n        \"419357\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/admin/menu_set?:id_menu_set=MS004",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"menu_set"
+							],
+							"query": [
+								{
+									"key": ":id_menu_set",
+									"value": "MS004"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

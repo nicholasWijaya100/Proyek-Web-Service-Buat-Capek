@@ -1,25 +1,55 @@
-const Sequelize  = require('sequelize');
-const {getDB}   = require("../conn");
-const sequelize = getDB(); 
-const User = sequelize.define('user', {
-    id: {
-        type: Sequelize.BIGINT,
-        primaryKey: true,
-        autoIncrement: true
-    },
-    id_user: {
-        type: Sequelize.STRING,
-    },
-    id_event: {
-        type: Sequelize.STRING,
-    },
-    nama_event: {
-        type: Sequelize.STRING,
+'use strict';
+const { Model } = require('sequelize');
+
+module.exports = (sequelize, DataTypes) => {
+  class User extends Model {
+    static associate(models) {
+      // Define associations here
     }
-}, {
-    tableName: 'users',
-    timestamps: false
-});
-module.exports = (sequelize, Sequelize) => {
-    return User; 
-}
+  }
+
+  User.init(
+    {
+      username: {
+        type: DataTypes.STRING,
+        primaryKey: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+      },
+      gender: {
+        type: DataTypes.STRING,
+      },
+      birthdate: {
+        type: DataTypes.DATE,
+      },
+      body_weight: {
+        type: DataTypes.INTEGER,
+      },
+      body_height: {
+        type: DataTypes.INTEGER,
+      },
+      target_weight: {
+        type: DataTypes.INTEGER,
+      },
+      is_vegetarian: {
+        type: DataTypes.STRING,
+      },
+      profile_picture: {
+        type: DataTypes.STRING,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'User',
+      tableName: "users",
+      timestamps: true,
+      paranoid: false,
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+      deletedAt: 'deletedAt',
+    }
+  );
+
+  return User;
+};

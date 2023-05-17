@@ -1,40 +1,40 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class Diet extends Model {
+  class MenuSet extends Model {
     static associate(models) {
       // Define associations here
     }
   }
 
-  Diet.init(
+  MenuSet.init(
     {
-      diet_id: {
+      menu_set_id: {
         type: DataTypes.STRING,
         primaryKey: true,
       },
-      diet_name: {
+      menu_set_name: {
         type: DataTypes.STRING,
       },
-      diet_content: {
+      menu_content: {
         type: DataTypes.TEXT,
       },
-      diet_total_calories: {
+      menu_set_total_calories: {
         type: DataTypes.INTEGER,
       },
     },
     {
       sequelize,
-      modelName: 'Diet',
-      tableName: "diets",
+      modelName: "MenuSet",
+      tableName: "menu_sets",
       timestamps: true,
       paranoid: false,
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-      deletedAt: 'deletedAt',
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
+      deletedAt: "deletedAt",
     }
   );
 
-  return Diet;
+  return MenuSet;
 };
