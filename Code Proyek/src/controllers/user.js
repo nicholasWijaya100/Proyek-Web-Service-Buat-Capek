@@ -1,8 +1,13 @@
+const Joi = require("joi").extend(require("@joi/date"));
+const sequelize = require("../databases/conn");
+const mod_users = require("../models/user");
+const { User, MenuSet, Diet } = require("../models");
+
 const register = async (req, res) => {
   var cek = Joi.object({
     username: Joi.string().required(),
     password: Joi.string().required(),
-    gender: Joi.string().valid("F", "M").required().toUpperCase(),
+    gender: Joi.string().valid("F", "M").required(),
     birth_date: Joi.date().format("DD/MM/YYYY"),
     body_weight: Joi.string().required(),
     body_height: Joi.string().required(),
@@ -17,11 +22,10 @@ const register = async (req, res) => {
     var body_weight = req.body.body_weight;
     var body_height = req.body.body_height;
 
-    var [cekuser] = await sequelize.query(
-      "select * from user where username = '" + username + "'"
-    );
+    var cekuser = await User.findAll({ where: { username: username } });
+
     if (cekuser.length == 0) {
-      if (gender == "MALE" || gender == "FEMALE") {
+      if (gender == "F" || gender == "M") {
         var alphabet =
           "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         var api = "";
@@ -32,31 +36,32 @@ const register = async (req, res) => {
         }
         var api_hit = 0;
         var saldo = 0;
-        var userbaru = mod_users.build(
-          username,
-          password,
-          gender,
-          birth_date,
-          body_weight,
-          body_height,
-          saldo,
-          api_hit,
-          api
-        );
-
+        var userbaru = User.build({
+          username: username,
+          password: password,
+          gender: gender,
+          birth_date: birth_date,
+          body_weight: body_weight,
+          body_height: body_height,
+          saldo: saldo,
+          api_hit: api_hit,
+          api_key: api,
+        });
         await userbaru.save();
+
         res.json({
           message: "User created successfully.",
-          data: newUser,
+          data: userbaru,
         });
       } else {
-        res.status(400).send({ msg: "Gender harus MALE/FEMALE" });
+        res.status(400).send({ msg: "Gender harus M atau F" });
       }
     } else {
       res.status(400).send({ msg: "Akun Sudah Terdaftar" });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json(error.message);
   }
 };
 
@@ -71,9 +76,8 @@ const login = async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
 
-    var [cekuser] = await sequelize.query(
-      "select * from user where username = '" + username + "'"
-    );
+    var cekuser = User.findAll({ where: { username: username } });
+
     if (cekuser.length > 0) {
       if (cekuser[0].username == username && cekuser[0].password == password) {
         return res.status(200).json({

@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       gender: {
         type: DataTypes.STRING,
       },
-      birthdate: {
+      birth_date: {
         type: DataTypes.DATE,
       },
       body_weight: {
@@ -29,25 +29,34 @@ module.exports = (sequelize, DataTypes) => {
       body_height: {
         type: DataTypes.INTEGER,
       },
-      target_weight: {
+      // target_weight: {
+      //   type: DataTypes.INTEGER,
+      // },
+      saldo: {
         type: DataTypes.INTEGER,
       },
-      is_vegetarian: {
+      api_hit: {
+        type: DataTypes.INTEGER,
+      },
+      api_key: {
         type: DataTypes.STRING,
       },
-      profile_picture: {
-        type: DataTypes.STRING,
-      },
+      // is_vegetarian: {
+      //   type: DataTypes.STRING,
+      // },
+      // profile_picture: {
+      //   type: DataTypes.STRING,
+      // },
     },
     {
       sequelize,
-      modelName: 'User',
-      tableName: "users",
+      modelName: "User",
+      tableName: "user",
       timestamps: true,
       paranoid: false,
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-      deletedAt: 'deletedAt',
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
+      deletedAt: "deletedAt",
     }
   );
 

@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "1184c48e-2ee8-4a7f-8428-1bb1028957ad",
+		"_postman_id": "1ec6d37b-a542-4c28-8ddf-220b1ccdab95",
 		"name": "Proyek",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25992275"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -41,7 +40,10 @@
 					"name": "getMenu",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -93,7 +95,10 @@
 					"name": "deleteDiet",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -101,7 +106,10 @@
 					"name": "getMenuSet",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -134,6 +142,97 @@
 									"key": ":id_menu_set",
 									"value": "MS004"
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Register Login",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "wewe",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "default"
+								},
+								{
+									"key": "gender",
+									"value": "M",
+									"type": "default"
+								},
+								{
+									"key": "birth_date",
+									"value": "16/09/2022",
+									"type": "default"
+								},
+								{
+									"key": "body_weight",
+									"value": "44",
+									"type": "default"
+								},
+								{
+									"key": "body_height",
+									"value": "155",
+									"type": "default"
+								},
+								{
+									"key": "profile_picture",
+									"value": "",
+									"type": "default",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"login"
 							]
 						}
 					},

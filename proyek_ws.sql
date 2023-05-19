@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Bulan Mei 2023 pada 15.30
+-- Waktu pembuatan: 19 Bulan Mei 2023 pada 11.55
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 8.1.2
 
@@ -57,20 +57,27 @@ CREATE TABLE `user` (
   `username` varchar(20) NOT NULL,
   `password` varchar(10) DEFAULT NULL,
   `gender` varchar(6) DEFAULT NULL,
-  `birth_date` varchar(10) DEFAULT NULL,
+  `birth_date` date DEFAULT current_timestamp(),
   `body_weight` int(5) DEFAULT NULL,
   `body_height` int(5) DEFAULT NULL,
   `saldo` int(10) DEFAULT NULL,
   `api_hit` int(15) DEFAULT NULL,
-  `api_key` varchar(10) DEFAULT NULL
+  `api_key` varchar(10) DEFAULT NULL,
+  `createdAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updatedAt` timestamp NOT NULL DEFAULT current_timestamp(),
+  `deletedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`username`, `password`, `gender`, `birth_date`, `body_weight`, `body_height`, `saldo`, `api_hit`, `api_key`) VALUES
-('akun1', '123', 'MALE', '11/09/2001', 60, 175, 20000, 3, 'bNEcmQd8rQ');
+INSERT INTO `user` (`username`, `password`, `gender`, `birth_date`, `body_weight`, `body_height`, `saldo`, `api_hit`, `api_key`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
+('akun1', '123', 'MALE', '0000-00-00', 60, 175, 20000, 3, 'bNEcmQd8rQ', '2023-05-19 08:47:59', '2023-05-19 08:47:59', '2023-05-19 08:47:59'),
+('wewe', '123', 'M', '0000-00-00', 44, 155, 0, 0, 'q', '2023-05-19 09:20:37', '2023-05-19 09:20:37', '2023-05-19 09:20:37'),
+('wew', '123', 'M', '0000-00-00', 44, 155, 0, 0, 'Z', '2023-05-19 09:21:30', '2023-05-19 09:21:30', '2023-05-19 09:21:30'),
+('qi', '123', 'M', '0000-00-00', 44, 155, 0, 0, '4a8RVwbXqh', '2023-05-19 09:41:57', '2023-05-19 09:41:57', '2023-05-19 09:41:57'),
+('ot', '123', 'M', '0000-00-00', 44, 155, 0, 0, 'EeIH0bZt8c', '2023-05-19 09:45:10', '2023-05-19 09:45:10', '2023-05-19 09:45:10');
 
 --
 -- Indexes for dumped tables
