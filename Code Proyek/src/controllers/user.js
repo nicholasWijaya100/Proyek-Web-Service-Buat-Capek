@@ -7,7 +7,7 @@ const register = async (req, res) => {
   var cek = Joi.object({
     username: Joi.string().required(),
     password: Joi.string().required(),
-    gender: Joi.string().valid("F", "M").required(),
+    gender: Joi.string().valid("FEMALE", "MALE").required(),
     birth_date: Joi.date().format("DD/MM/YYYY"),
     body_weight: Joi.string().required(),
     body_height: Joi.string().required(),
@@ -22,10 +22,13 @@ const register = async (req, res) => {
     var body_weight = req.body.body_weight;
     var body_height = req.body.body_height;
 
+    var arrbirth = birth_date.split("/");
+    birth_date = arrbirth[2] + "-" + arrbirth[1] + "-" + arrbirth[0];
+
     var cekuser = await User.findAll({ where: { username: username } });
 
     if (cekuser.length == 0) {
-      if (gender == "F" || gender == "M") {
+      if (gender == "FEMALE" || gender == "MALE") {
         var alphabet =
           "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         var api = "";
@@ -53,8 +56,9 @@ const register = async (req, res) => {
           message: "User created successfully.",
           data: userbaru,
         });
+        //return res.status(200).json(birth_date);
       } else {
-        res.status(400).send({ msg: "Gender harus M atau F" });
+        res.status(400).send({ msg: "Gender harus MALE atau FEMALE" });
       }
     } else {
       res.status(400).send({ msg: "Akun Sudah Terdaftar" });
@@ -76,27 +80,24 @@ const login = async (req, res) => {
     var username = req.body.username;
     var password = req.body.password;
 
-    var cekuser = User.findAll({ where: { username: username } });
+    var cekuser = await User.findAll({ where: { username: username } });
 
     if (cekuser.length > 0) {
-      if (cekuser[0].username == username && cekuser[0].password == password) {
+      if (username == cekuser[0].username || password == cekuser[0].password) {
         return res.status(200).json({
-          username: username,
-          gender: cekuser[0].gender,
+          username: cekuser[0].username,
+          password: cekuser[0].password,
           birth_date: cekuser[0].birth_date,
-          body_weight: cekuser[0].body_weight,
-          body_height: cekuser[0].body_height,
-          saldo: cekuser[0].saldo,
-          api_hit: cekuser[0].api_hit,
         });
       } else {
         res.status(400).send({ msg: "Username atau Password salah" });
       }
     } else {
-      res.status(400).send({ msg: "Akun tidak terdaftar" });
+      res.status(400).send({ msg: "Akun Tidak Terdaftar" });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json(error.message);
   }
 };
 
