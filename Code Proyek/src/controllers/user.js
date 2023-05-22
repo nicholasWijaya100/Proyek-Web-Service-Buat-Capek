@@ -9,8 +9,8 @@ const register = async (req, res) => {
     password: Joi.string().required(),
     gender: Joi.string().valid("FEMALE", "MALE").required(),
     birth_date: Joi.date().format("DD/MM/YYYY"),
-    body_weight: Joi.string().required(),
-    body_height: Joi.string().required(),
+    body_weight: Joi.number().required(),
+    body_height: Joi.number().required(),
   });
   try {
     await cek.validateAsync(req.body);
@@ -101,7 +101,55 @@ const login = async (req, res) => {
   }
 };
 
-const updateUserData = async (req, res) => {};
+const updateUserData = async (req, res) => {
+  var cek = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    body_weight: Joi.number(),
+    body_height: Joi.number(),
+  });
+  try {
+    await cek.validateAsync(req.body);
+
+    var username = req.body.username;
+    var password = req.body.password;
+    var body_weight = req.body.body_weight;
+    var body_height = req.body.body_height;
+
+    var cekuser = await User.findAll({ where: { username: username } });
+
+    if (cekuser.length > 0) {
+      if (username == cekuser[0].username || password == cekuser[0].password) {
+        if (body_weight != "") {
+          User.update(
+            { body_weight: req.body.body_weight },
+            { where: { username: req.body.username } }
+          );
+        }
+        if (body_height != "") {
+          User.update(
+            { body_height: req.body.body_height },
+            { where: { username: req.body.username } }
+          );
+        }
+        return res.status(200).json("Berhasil Update data");
+
+        // if (body_weight == "" && body_height == "") {
+        //   res.status(400).send({
+        //     msg: "body_weight atau body_height harus diisi salah satu atau dua-duanya",
+        //   });
+        // }
+      } else {
+        res.status(400).send({ msg: "Username atau Password salah" });
+      }
+    } else {
+      res.status(400).send({ msg: "Akun Tidak Terdaftar" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
 
 const updatePassword = async (req, res) => {};
 
