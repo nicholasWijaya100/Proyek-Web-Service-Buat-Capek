@@ -150,7 +150,7 @@
 			]
 		},
 		{
-			"name": "User Register Login",
+			"name": "User",
 			"item": [
 				{
 					"name": "Register",
@@ -221,18 +221,77 @@
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
-							"urlencoded": []
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "eu",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "default"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/api/login",
+							"raw": "http://localhost:3000/v1/user/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "3000",
 							"path": [
-								"api",
+								"v1",
+								"user",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Data",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "eu",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "default"
+								},
+								{
+									"key": "body_weight",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "body_height",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/user/update/userdata",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"update",
+								"userdata"
 							]
 						}
 					},
