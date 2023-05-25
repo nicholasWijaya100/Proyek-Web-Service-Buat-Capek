@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "MenuSet",
       tableName: "menu_sets",
       timestamps: true,
-      paranoid: false,
+      paranoid: true,
       createdAt: "createdAt",
       updatedAt: "updatedAt",
       deletedAt: "deletedAt",

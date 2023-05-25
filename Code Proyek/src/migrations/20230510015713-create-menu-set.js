@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
+      menu_set_total_calories: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -25,7 +29,7 @@ module.exports = {
         type: Sequelize.DATE
       },
       deletedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE
       }
     });
