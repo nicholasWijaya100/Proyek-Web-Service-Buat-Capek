@@ -88,7 +88,7 @@ const login = async (req, res) => {
     var cekuser = await User.findAll({ where: { username: username } });
 
     if (cekuser.length > 0) {
-      if (username == cekuser[0].username || password == cekuser[0].password) {
+      if (username == cekuser[0].username && password == cekuser[0].password) {
         return res.status(200).json({
           username: cekuser[0].username,
           password: cekuser[0].password,
@@ -126,7 +126,7 @@ const updateUserData = async (req, res) => {
     var cekuser = await User.findAll({ where: { username: username } });
 
     if (cekuser.length > 0) {
-      if (username == cekuser[0].username || password == cekuser[0].password) {
+      if (username == cekuser[0].username && password == cekuser[0].password) {
         if (body_weight != "") {
           User.update(
             { body_weight: req.body.body_weight },
@@ -176,7 +176,7 @@ const topup = async (req, res) => {
     var cekuser = await User.findAll({ where: { username: username } });
 
     if (cekuser.length > 0) {
-      if (username == cekuser[0].username || password == cekuser[0].password) {
+      if (username == cekuser[0].username && password == cekuser[0].password) {
         if (topup > 0) {
           User.update(
             { saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup) },
@@ -223,7 +223,7 @@ const recharge = async (req, res) => {
     var cekuser = await User.findAll({ where: { username: username } });
 
     if (cekuser.length > 0) {
-      if (username == cekuser[0].username || password == cekuser[0].password) {
+      if (username == cekuser[0].username && password == cekuser[0].password) {
         if (recharge <= cekuser[0].saldo) {
           var biaya = recharge * 10000;
           var sisa_saldo = cekuser[0].saldo - biaya;
