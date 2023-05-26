@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 26 Bulan Mei 2023 pada 09.44
+-- Waktu pembuatan: 26 Bulan Mei 2023 pada 10.51
 -- Versi server: 10.4.22-MariaDB
 -- Versi PHP: 8.1.2
 
@@ -100,7 +100,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`username`, `password`, `gender`, `birth_date`, `body_weight`, `body_height`, `target_weight`, `role`, `saldo`, `api_hit`, `api_key`, `createdAt`, `updatedAt`, `deletedAt`) VALUES
-('akun1', '123', 'MALE', '2022-08-16 00:00:00', 44, 160, 40, 'user', 0, 0, 'O98nvDF4qS', '2023-05-26 07:42:40', '2023-05-26 07:43:00', '0000-00-00 00:00:00');
+('akun1', '123', 'FEMALE', '2022-08-16 00:00:00', 44, 155, 40, 'user', 100000, 3, 'OxdQRJ9UXP', '2023-05-26 08:43:56', '2023-05-26 08:49:32', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
