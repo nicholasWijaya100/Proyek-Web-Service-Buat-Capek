@@ -29,9 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       body_height: {
         type: DataTypes.INTEGER,
       },
-      // target_weight: {
-      //   type: DataTypes.INTEGER,
-      // },
+      target_weight: {
+        type: DataTypes.INTEGER,
+      },
+      role: {
+        type: DataTypes.STRING,
+      },
       saldo: {
         type: DataTypes.INTEGER,
       },
@@ -41,9 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       api_key: {
         type: DataTypes.STRING,
       },
-      // is_vegetarian: {
-      //   type: DataTypes.STRING,
-      // },
+
       // profile_picture: {
       //   type: DataTypes.STRING,
       // },

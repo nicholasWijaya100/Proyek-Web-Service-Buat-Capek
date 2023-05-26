@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "ff716c94-1402-44b9-8366-2e0fcb511f3b",
+		"_postman_id": "1ec6d37b-a542-4c28-8ddf-220b1ccdab95",
 		"name": "Proyek",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "25992275"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -16,14 +15,24 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"menu_set_name\" : \"pizza3\",\r\n    \"menu_list\": [\r\n        {\r\n            \"id\" : \"426101\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"284934\",\r\n            \"qty\" : \"1\"\r\n        },\r\n        {\r\n            \"id\" : \"320123\",\r\n            \"qty\" : \"3\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"menu_set_name\" : \"new_name\",\r\n    \"menu_list\": [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"424571\",\r\n            \"qty\" : \"1\"\r\n        },\r\n        {\r\n            \"id\" : \"419357\",\r\n            \"qty\" : \"3\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "{{HOST}}/v1/admin/menu_set"
+						"url": {
+							"raw": "{{HOST}}/v1/admin/menu_set",
+							"host": [
+								"{{HOST}}"
+							],
+							"path": [
+								"v1",
+								"admin",
+								"menu_set"
+							]
+						}
 					},
 					"response": []
 				},
@@ -33,65 +42,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{HOST}}/v1/admin/menu?nama_menu=pizza&max_carbohydrates=50",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"v1",
-								"admin",
-								"menu"
-							],
-							"query": [
-								{
-									"key": "id_menu",
-									"value": "424571",
-									"disabled": true
-								},
-								{
-									"key": "nama_menu",
-									"value": "pizza"
-								},
-								{
-									"key": "min_calories",
-									"value": "1000",
-									"disabled": true
-								},
-								{
-									"key": "max_calories",
-									"value": "2000",
-									"disabled": true
-								},
-								{
-									"key": "min_carbohydrates",
-									"value": "70",
-									"disabled": true
-								},
-								{
-									"key": "max_carbohydrates",
-									"value": "50"
-								},
-								{
-									"key": "min_protein",
-									"value": "80",
-									"disabled": true
-								},
-								{
-									"key": "max_protein",
-									"value": "20",
-									"disabled": true
-								},
-								{
-									"key": "min_fat",
-									"value": "80",
-									"disabled": true
-								},
-								{
-									"key": "max_fat",
-									"value": "20",
-									"disabled": true
-								}
-							]
+							"raw": ""
 						}
 					},
 					"response": []
@@ -106,182 +57,9 @@
 							"urlencoded": [
 								{
 									"key": "diet_name",
-									"value": "diet",
+									"value": "diet1",
 									"type": "text"
 								},
-								{
-									"key": "breakfast",
-									"value": "MS001",
-									"type": "text"
-								},
-								{
-									"key": "lunch",
-									"value": "MS006",
-									"type": "text"
-								},
-								{
-									"key": "dinner",
-									"value": "MS005",
-									"type": "text"
-								}
-							]
-						},
-						"url": "{{HOST}}/v1/admin/diet"
-					},
-					"response": []
-				},
-				{
-					"name": "deleteDiet",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "{{HOST}}/v1/admin/diet/:id_diet",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"v1",
-								"admin",
-								"diet",
-								":id_diet"
-							],
-							"variable": [
-								{
-									"key": "id_diet",
-									"value": "D001"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "getMenuSet",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "{{HOST}}/v1/admin/menu_set?id_menu_set=MS001",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"v1",
-								"admin",
-								"menu_set"
-							],
-							"query": [
-								{
-									"key": "id_menu_set",
-									"value": "MS001"
-								},
-								{
-									"key": "nama_menu_set",
-									"value": "an",
-									"disabled": true
-								},
-								{
-									"key": "min_calories",
-									"value": "1000",
-									"disabled": true
-								},
-								{
-									"key": "max_calories",
-									"value": "1000",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateMenuSet",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"action\" : \"replace\",\r\n    \"menu_list\" : [\r\n        {\r\n            \"id\" : \"426101\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"284934\",\r\n            \"qty\" : \"1\"\r\n        }\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{HOST}}/v1/admin/menu_set/:id_menu_set",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"v1",
-								"admin",
-								"menu_set",
-								":id_menu_set"
-							],
-							"variable": [
-								{
-									"key": "id_menu_set",
-									"value": "MS001"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "deleteMenuSet",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{HOST}}/v1/admin/menu_set/:id_menu_set?delete_if_used=true",
-							"host": [
-								"{{HOST}}"
-							],
-							"path": [
-								"v1",
-								"admin",
-								"menu_set",
-								":id_menu_set"
-							],
-							"query": [
-								{
-									"key": "delete_if_used",
-									"value": "true"
-								}
-							],
-							"variable": [
-								{
-									"key": "id_menu_set",
-									"value": "MS003"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "updateDiet",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
 								{
 									"key": "breakfast",
 									"value": "MS001",
@@ -294,26 +72,75 @@
 								},
 								{
 									"key": "dinner",
-									"value": "MS005",
+									"value": "MS003",
 									"type": "text"
 								}
 							]
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/admin/diet/:id_diet",
+							"raw": "{{HOST}}/v1/admin/diet",
 							"host": [
 								"{{HOST}}"
 							],
 							"path": [
 								"v1",
 								"admin",
-								"diet",
-								":id_diet"
+								"diet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteDiet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMenuSet",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateMenuSet",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\" : \"add\",\r\n    \"menu_id\" : [\r\n        \"192386\", \r\n        \"419357\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{HOST}}/v1/admin/menu_set?:id_menu_set=MS004",
+							"host": [
+								"{{HOST}}"
 							],
-							"variable": [
+							"path": [
+								"v1",
+								"admin",
+								"menu_set"
+							],
+							"query": [
 								{
-									"key": "id_diet",
-									"value": "D003"
+									"key": ":id_menu_set",
+									"value": "MS004"
 								}
 							]
 						}
@@ -335,7 +162,7 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "wewe",
+									"value": "akun1",
 									"type": "default"
 								},
 								{
@@ -345,12 +172,12 @@
 								},
 								{
 									"key": "gender",
-									"value": "M",
+									"value": "MALE",
 									"type": "default"
 								},
 								{
 									"key": "birth_date",
-									"value": "16/09/2022",
+									"value": "16/08/2022",
 									"type": "default"
 								},
 								{
@@ -364,14 +191,30 @@
 									"type": "default"
 								},
 								{
-									"key": "profile_picture",
+									"key": "target_weigth",
 									"value": "",
-									"type": "default",
-									"disabled": true
+									"type": "default"
+								},
+								{
+									"key": "is_vegetarian",
+									"value": "",
+									"type": "default"
 								}
 							]
 						},
-						"url": "http://localhost:3000/v1/user/register"
+						"url": {
+							"raw": "http://localhost:3000/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"register"
+							]
+						}
 					},
 					"response": []
 				},
@@ -395,7 +238,19 @@
 								}
 							]
 						},
-						"url": "http://localhost:3000/v1/user/login"
+						"url": {
+							"raw": "http://localhost:3000/v1/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
@@ -429,7 +284,102 @@
 								}
 							]
 						},
-						"url": "http://localhost:3000/v1/user/update/userdata"
+						"url": {
+							"raw": "http://localhost:3000/v1/user/update/userdata",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"update",
+								"userdata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Top Up",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "akun1",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "default"
+								},
+								{
+									"key": "topup",
+									"value": "10000",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/user/topup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"topup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recharge",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "akun1",
+									"type": "default"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "default"
+								},
+								{
+									"key": "recharge",
+									"value": "3",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/user/recharge",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"recharge"
+							]
+						}
 					},
 					"response": []
 				}

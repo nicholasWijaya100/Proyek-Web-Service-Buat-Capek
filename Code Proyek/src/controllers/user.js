@@ -11,6 +11,8 @@ const register = async (req, res) => {
     birth_date: Joi.date().format("DD/MM/YYYY"),
     body_weight: Joi.number().required(),
     body_height: Joi.number().required(),
+    target_weight: Joi.string().required(),
+    role: Joi.string().valid("user", "consultant").required(),
   });
   try {
     await cek.validateAsync(req.body);
@@ -21,6 +23,8 @@ const register = async (req, res) => {
     var birth_date = req.body.birth_date;
     var body_weight = req.body.body_weight;
     var body_height = req.body.body_height;
+    var target_weight = req.body.target_weight;
+    var role = req.body.role;
 
     var arrbirth = birth_date.split("/");
     birth_date = arrbirth[2] + "-" + arrbirth[1] + "-" + arrbirth[0];
@@ -46,6 +50,8 @@ const register = async (req, res) => {
           birth_date: birth_date,
           body_weight: body_weight,
           body_height: body_height,
+          target_weight: target_weight,
+          role: role,
           saldo: saldo,
           api_hit: api_hit,
           api_key: api,
@@ -56,7 +62,6 @@ const register = async (req, res) => {
           message: "User created successfully.",
           data: userbaru,
         });
-        //return res.status(200).json(birth_date);
       } else {
         res.status(400).send({ msg: "Gender harus MALE atau FEMALE" });
       }
@@ -107,6 +112,7 @@ const updateUserData = async (req, res) => {
     password: Joi.string().required(),
     body_weight: Joi.number(),
     body_height: Joi.number(),
+    target_weight: Joi.number(),
   });
   try {
     await cek.validateAsync(req.body);
@@ -115,6 +121,7 @@ const updateUserData = async (req, res) => {
     var password = req.body.password;
     var body_weight = req.body.body_weight;
     var body_height = req.body.body_height;
+    var target_weight = req.body.target_weight;
 
     var cekuser = await User.findAll({ where: { username: username } });
 
@@ -132,13 +139,13 @@ const updateUserData = async (req, res) => {
             { where: { username: req.body.username } }
           );
         }
+        if (target_weight != "") {
+          User.update(
+            { target_weight: req.body.target_weight },
+            { where: { username: req.body.username } }
+          );
+        }
         return res.status(200).json("Berhasil Update data");
-
-        // if (body_weight == "" && body_height == "") {
-        //   res.status(400).send({
-        //     msg: "body_weight atau body_height harus diisi salah satu atau dua-duanya",
-        //   });
-        // }
       } else {
         res.status(400).send({ msg: "Username atau Password salah" });
       }
@@ -153,9 +160,94 @@ const updateUserData = async (req, res) => {
 
 const updatePassword = async (req, res) => {};
 
-const topup = async (req, res) => {};
+const topup = async (req, res) => {
+  var cek = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    topup: Joi.number().min(10000).required(),
+  });
+  try {
+    await cek.validateAsync(req.body);
 
-const recharge = async (req, res) => {};
+    var username = req.body.username;
+    var password = req.body.password;
+    var topup = req.body.topup;
+
+    var cekuser = await User.findAll({ where: { username: username } });
+
+    if (cekuser.length > 0) {
+      if (username == cekuser[0].username || password == cekuser[0].password) {
+        if (topup > 0) {
+          User.update(
+            { saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup) },
+            { where: { username: req.body.username } }
+          );
+          var cekuser2 = await User.findAll({ where: { username: username } });
+          return res.status(200).json({
+            username: username,
+            saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup),
+          });
+        }
+      } else {
+        res.status(400).send({ msg: "Username atau Password salah" });
+      }
+    } else {
+      res.status(400).send({ msg: "Akun Tidak Terdaftar" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
+
+const recharge = async (req, res) => {
+  var cek = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    recharge: Joi.number().min(1).required(),
+  });
+  try {
+    await cek.validateAsync(req.body);
+
+    var username = req.body.username;
+    var password = req.body.password;
+    var recharge = req.body.recharge;
+
+    var cekuser = await User.findAll({ where: { username: username } });
+
+    if (cekuser.length > 0) {
+      if (username == cekuser[0].username || password == cekuser[0].password) {
+        if (recharge <= cekuser[0].saldo) {
+          var biaya = recharge * 10000;
+          var sisa_saldo = cekuser[0].saldo - biaya;
+          User.update(
+            {
+              api_hit:
+                parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
+            },
+            { where: { username: req.body.username } }
+          );
+          var cekuser2 = await User.findAll({ where: { username: username } });
+          return res.status(200).json({
+            username: username,
+            sisa_saldo: sisa_saldo,
+            biaya: biaya,
+            kuota: parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
+          });
+        } else {
+          return res.status(200).json("Saldo anda tidak mencukupi");
+        }
+      } else {
+        res.status(400).send({ msg: "Username atau Password salah" });
+      }
+    } else {
+      res.status(400).send({ msg: "Akun Tidak Terdaftar" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
 
 const diet = async (req, res) => {};
 

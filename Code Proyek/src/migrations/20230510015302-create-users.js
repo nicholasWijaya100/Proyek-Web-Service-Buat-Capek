@@ -1,60 +1,72 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable("users", {
       username: {
         type: Sequelize.STRING,
         primaryKey: true,
-        allowNull: false
+        allowNull: false,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       gender: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
-      birthdate: {
+      birth_date: {
         type: Sequelize.DATE,
-        allowNull: false
+        allowNull: false,
       },
       body_weight: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       body_height: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
-      target_height: {
+      target_weight: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
-      is_vegetarian: {
+      role: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
-      profile_picture: {
+      saldo: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      api_hit: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      api_key: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
+      // profile_picture: {
+      //   type: Sequelize.STRING,
+      //   allowNull: false,
+      // },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       deletedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
-  }
+    await queryInterface.dropTable("users");
+  },
 };
