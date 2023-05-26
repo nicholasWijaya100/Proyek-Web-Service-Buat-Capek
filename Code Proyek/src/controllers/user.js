@@ -255,11 +255,11 @@ const calculateBMI = async (req, res) => {};
 
 const scheduleDiet = async (req, res) => {};
 
-const getSchedule = async (req, res) => {};
+const getTransactionHistory = async (req, res) => {};
+
+const getTopupHistory = async (req, res) => {};
 
 const updateSchedule = async (req, res) => {};
-
-const getCalories = async (req, res) => {};
 
 module.exports = {
   register,
@@ -271,7 +271,7 @@ module.exports = {
   diet,
   calculateBMI,
   scheduleDiet,
-  getSchedule,
+  getTransactionHistory,
   updateSchedule,
-  getCalories,
+  getTopupHistory,
 };
