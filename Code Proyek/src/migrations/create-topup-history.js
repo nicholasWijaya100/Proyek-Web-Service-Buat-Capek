@@ -17,10 +17,14 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false
       },
-      topup_date: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
     });
   },
   async down(queryInterface, Sequelize) {

@@ -11,23 +11,19 @@ module.exports = (sequelize, DataTypes) => {
   TopupHistory.init(
     {
         topup_history_id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             primaryKey: true,
             allowNull: false,
             autoIncrement: true
         },
         username: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         amount: {
-            type: Sequelize.TEXT,
+            type: DataTypes.TEXT,
             allowNull: false
         },
-        topup_date: {
-            allowNull: false,
-            type: Sequelize.DATE
-        }
     },
     {
       sequelize,
@@ -37,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
       createdAt: "createdAt",
       updatedAt: "updatedAt",
-      deletedAt: "deletedAt",
     }
   );
 
