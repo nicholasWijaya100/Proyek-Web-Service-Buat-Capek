@@ -264,7 +264,35 @@ const scheduleDiet = async (req, res) => {};
 
 const getTransactionHistory = async (req, res) => {};
 
-const getTopupHistory = async (req, res) => {};
+const getTopupHistory = async (req, res) => {
+  var cek = Joi.object({
+    api_key: Joi.string().required(),
+  });
+  try {
+    await cek.validateAsync(req.query);
+
+    var api_key = req.query.api_key;
+
+    var user = await User.findAll({ where: { api_key: api_key } });
+
+    if(user.length == 0) {
+      res.status(400).json("API key yang diinput invalid")
+    } else {
+      var userTopupHistory = await TopupHistory.findAll({ where: { username: user[0].username } });
+      var output = [];
+      for(var i = 0; i < userTopupHistory.length; i++) {
+        output.push({
+          amount: userTopupHistory[i].amount,
+          topup_at: userTopupHistory[i].createdAt
+        });
+      }
+      res.status(200).json(output);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
 
 const updateSchedule = async (req, res) => {};
 
