@@ -1,7 +1,7 @@
 const Joi = require("joi").extend(require("@joi/date"));
 const sequelize = require("../databases/conn");
 const mod_users = require("../models/user");
-const { User, MenuSet, Diet } = require("../models");
+const { User, MenuSet, Diet, TopupHistory } = require("../models");
 
 const register = async (req, res) => {
   var cek = Joi.object({
@@ -183,6 +183,13 @@ const topup = async (req, res) => {
             { where: { username: req.body.username } }
           );
           var cekuser2 = await User.findAll({ where: { username: username } });
+
+          var topuphistorybaru = TopupHistory.build({
+            username: username,
+            amount: topup,
+          });
+          await topuphistorybaru.save();
+
           return res.status(200).json({
             username: username,
             saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup),
@@ -255,11 +262,11 @@ const calculateBMI = async (req, res) => {};
 
 const scheduleDiet = async (req, res) => {};
 
-const getSchedule = async (req, res) => {};
+const getTransactionHistory = async (req, res) => {};
+
+const getTopupHistory = async (req, res) => {};
 
 const updateSchedule = async (req, res) => {};
-
-const getCalories = async (req, res) => {};
 
 module.exports = {
   register,
@@ -271,7 +278,7 @@ module.exports = {
   diet,
   calculateBMI,
   scheduleDiet,
-  getSchedule,
+  getTransactionHistory,
   updateSchedule,
-  getCalories,
+  getTopupHistory,
 };

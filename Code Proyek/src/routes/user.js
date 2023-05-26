@@ -10,9 +10,9 @@ const {
   diet,
   calculateBMI,
   scheduleDiet,
-  getSchedule,
+  getTransactionHistory,
   updateSchedule,
-  getCalories,
+  getTopupHistory,
 } = require("../controllers/user");
 
 router.post("/register", register);
@@ -24,8 +24,8 @@ router.patch("/recharge", recharge);
 router.get("/diet", diet);
 router.get("/calculate_BMI", calculateBMI);
 router.post("/schedule_diet", scheduleDiet);
-router.get("/schedule_diet", getSchedule);
+router.get("/transaction_history", getTransactionHistory);
 router.put("/schedule_diet", updateSchedule);
-router.get("/calories_intake", getCalories);
+router.get("/topup_history", getTopupHistory);
 
 module.exports = router;
