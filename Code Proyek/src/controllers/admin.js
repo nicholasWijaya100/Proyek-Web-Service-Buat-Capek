@@ -3,8 +3,10 @@ const { Sequelize, Op } = require("sequelize");
 const { User, MenuSet, Diet } = require("../models");
 const axios = require("axios");
 const Joi = require("joi");
+var jwt = require('jsonwebtoken');
 
 const ApiKey = "5598ef16d03246a18be2d241f48e9009";
+const JWT_KEY = 'KimJisoo';
 
 // =============================================================================
 

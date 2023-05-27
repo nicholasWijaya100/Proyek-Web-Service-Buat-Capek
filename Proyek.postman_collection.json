@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "1ec6d37b-a542-4c28-8ddf-220b1ccdab95",
+		"_postman_id": "5d153412-7c23-4beb-ad95-165b21b61070",
 		"name": "Proyek",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -380,6 +380,22 @@
 								"recharge"
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Topup History",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Recharge History",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}

@@ -20,6 +20,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      menu_set_maker: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
