@@ -373,13 +373,85 @@ const getRechargeHistory = async (req, res) => {
   }
 };
 
-const diet = async (req, res) => {};
+const diet = async (req, res) => {
+  var token = req.header('x-auth-token');
+  if(!req.header('x-auth-token')) {
+    res.status(400).json('Authentication token is missing');
+  } else {
+      try{
+          let userdata = jwt.verify(token, JWT_KEY)
+          try{
 
-const scheduleDiet = async (req, res) => {};
+          } catch(error) {
+            console.log(error);
+            res.status(400).json(error.message);
+          }
+      } catch(error) {
+        console.log(error);
+        res.status(400).json(error.message);
+      }
+  }
+};
 
-const getTransactionHistory = async (req, res) => {};
+const scheduleDiet = async (req, res) => {
+  var token = req.header('x-auth-token');
+  if(!req.header('x-auth-token')) {
+    res.status(400).json('Authentication token is missing');
+  } else {
+      try{
+          let userdata = jwt.verify(token, JWT_KEY)
+          try{
 
-const updateSchedule = async (req, res) => {};
+          } catch(error) {
+            console.log(error);
+            res.status(400).json(error.message);
+          }
+      } catch(error) {
+        console.log(error);
+        res.status(400).json(error.message);
+      }
+  }
+};
+
+const getTransactionHistory = async (req, res) => {
+  var token = req.header('x-auth-token');
+  if(!req.header('x-auth-token')) {
+    res.status(400).json('Authentication token is missing');
+  } else {
+      try{
+          let userdata = jwt.verify(token, JWT_KEY)
+          try{
+
+          } catch(error) {
+            console.log(error);
+            res.status(400).json(error.message);
+          }
+      } catch(error) {
+        console.log(error);
+        res.status(400).json(error.message);
+      }
+  }
+};
+
+const updateSchedule = async (req, res) => {
+  var token = req.header('x-auth-token');
+  if(!req.header('x-auth-token')) {
+    res.status(400).json('Authentication token is missing');
+  } else {
+      try{
+          let userdata = jwt.verify(token, JWT_KEY)
+          try{
+
+          } catch(error) {
+            console.log(error);
+            res.status(400).json(error.message);
+          }
+      } catch(error) {
+        console.log(error);
+        res.status(400).json(error.message);
+      }
+  }
+};
 
 module.exports = {
   register,
