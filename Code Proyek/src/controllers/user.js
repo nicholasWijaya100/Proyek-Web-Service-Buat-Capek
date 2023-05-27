@@ -1,7 +1,7 @@
 const Joi = require("joi").extend(require("@joi/date"));
 const sequelize = require("../databases/conn");
 const mod_users = require("../models/user");
-const { User, MenuSet, Diet, TopupHistory } = require("../models");
+const { User, MenuSet, Diet, TopupHistory, HistoryTransaction, RechargeHistory } = require("../models");
 
 const register = async (req, res) => {
   var cek = Joi.object({
@@ -235,6 +235,14 @@ const recharge = async (req, res) => {
             { where: { username: req.body.username } }
           );
           var cekuser2 = await User.findAll({ where: { username: username } });
+
+          var rechargehistorybaru = RechargeHistory.build({
+            username: username,
+            cash_used: biaya,
+            exchanged_hits: recharge
+          });
+          await rechargehistorybaru.save();
+
           return res.status(200).json({
             username: username,
             sisa_saldo: sisa_saldo,
@@ -255,14 +263,6 @@ const recharge = async (req, res) => {
     res.status(500).json(error.message);
   }
 };
-
-const diet = async (req, res) => {};
-
-const calculateBMI = async (req, res) => {};
-
-const scheduleDiet = async (req, res) => {};
-
-const getTransactionHistory = async (req, res) => {};
 
 const getTopupHistory = async (req, res) => {
   var cek = Joi.object({
@@ -294,6 +294,43 @@ const getTopupHistory = async (req, res) => {
   }
 };
 
+const getRechargeHistory = async (req, res) => {
+  var cek = Joi.object({
+    api_key: Joi.string().required(),
+  });
+  try {
+    await cek.validateAsync(req.query);
+
+    var api_key = req.query.api_key;
+
+    var user = await User.findAll({ where: { api_key: api_key } });
+
+    if(user.length == 0) {
+      res.status(400).json("API key yang diinput invalid")
+    } else {
+      var userRechargeHistory = await RechargeHistory.findAll({ where: { username: user[0].username } });
+      var output = [];
+      for(var i = 0; i < userRechargeHistory.length; i++) {
+        output.push({
+          cost_of_recharge: userRechargeHistory[i].cash_used,
+          api_hits_exchanged: userRechargeHistory[i].exchanged_hits,
+          recharged_at: userRechargeHistory[i].createdAt
+        });
+      }
+      res.status(200).json(output);
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+};
+
+const diet = async (req, res) => {};
+
+const scheduleDiet = async (req, res) => {};
+
+const getTransactionHistory = async (req, res) => {};
+
 const updateSchedule = async (req, res) => {};
 
 module.exports = {
@@ -304,7 +341,7 @@ module.exports = {
   topup,
   recharge,
   diet,
-  calculateBMI,
+  getRechargeHistory,
   scheduleDiet,
   getTransactionHistory,
   updateSchedule,

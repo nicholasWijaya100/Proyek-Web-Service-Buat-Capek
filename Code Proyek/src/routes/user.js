@@ -8,7 +8,7 @@ const {
   topup,
   recharge,
   diet,
-  calculateBMI,
+  getRechargeHistory,
   scheduleDiet,
   getTransactionHistory,
   updateSchedule,
@@ -22,7 +22,7 @@ router.patch("/update/password", updatePassword);
 router.patch("/topup", topup);
 router.patch("/recharge", recharge);
 router.get("/diet", diet);
-router.get("/calculate_BMI", calculateBMI);
+router.get("/recharge_history", getRechargeHistory);
 router.post("/schedule_diet", scheduleDiet);
 router.get("/transaction_history", getTransactionHistory);
 router.put("/schedule_diet", updateSchedule);
