@@ -3,6 +3,7 @@ var jwt = require('jsonwebtoken');
 const sequelize = require("../databases/conn");
 const mod_users = require("../models/user");
 const { User, MenuSet, Diet, TopupHistory, HistoryTransaction, RechargeHistory } = require("../models");
+const { where } = require("sequelize");
 const JWT_KEY = 'KimJisoo';
 
 const register = async (req, res) => {
@@ -178,7 +179,46 @@ const updateUserData = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
+  var username = req.body.username;
+  var password = req.body.password;
+  var new_password = req.body.new_password;
+  var confirm_new_password = req.body.confirm_new_password;
 
+  var cek = Joi.object({
+    username: Joi.string().required(),
+    password: Joi.string().required(),
+    new_password: Joi.string().required(),
+    confirm_new_password: Joi.ref('new_password')
+  });
+  try{
+    await cek.validateAsync(req.body);
+
+    // Check Username and Password
+    let checker = await User.findAll({
+      where: {
+          username: username,
+          password: password
+      }
+    }) 
+    console.log(checker.length);
+    if(checker.length>0){
+
+      // Update Password
+      const updating = await User.update(
+        { password: new_password },
+        { where: { username: username } }
+      );
+
+      res.status(200).send({ msg: "Password succesfully updated" });
+
+    }else{
+      res.status(404).send({ msg: "Username or Password incorrect" });
+    }
+    
+  }catch(error){
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
 };
 
 const topup = async (req, res) => {
