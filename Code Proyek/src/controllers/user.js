@@ -60,19 +60,19 @@ const register = async (req, res) => {
         });
         await userbaru.save();
 
-        res.status(201).json({
+        return res.status(201).json({
           message: "User created successfully.",
           data: userbaru,
         });
       } else {
-        res.status(400).send({ msg: "Gender harus MALE atau FEMALE" });
+        return res.status(400).send({ msg: "Gender harus MALE atau FEMALE" });
       }
     } else {
-      res.status(400).send({ msg: "Akun Sudah Terdaftar" });
+      return res.status(400).send({ msg: "Akun Sudah Terdaftar" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -104,17 +104,17 @@ const login = async (req, res) => {
             token: token,
           });
         } catch(error) {
-          res.status(400).json("Error: " + error);
+          return res.status(400).json("Error: " + error);
         }
       } else {
-        res.status(400).send({ msg: "Username atau Password salah" });
+        return res.status(400).send({ msg: "Username atau Password salah" });
       }
     } else {
-      res.status(400).send({ msg: "Akun Tidak Terdaftar" });
+      return res.status(400).send({ msg: "Akun Tidak Terdaftar" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -164,16 +164,16 @@ const updateUserData = async (req, res) => {
           }
         } catch(error) {
           console.log(error);
-          res.status(500).json(error.message);
+          return res.status(500).json(error.message);
         }
       } catch(error) {
         console.log(error);
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -221,16 +221,16 @@ const topup = async (req, res) => {
           }
         } catch(error) {
           console.log(error);
-          res.status(400).json(error.message);
+          return res.status(400).json(error.message);
         }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(400).json(error.message);
+    return res.status(400).json(error.message);
   }
 };
 
@@ -282,16 +282,16 @@ const recharge = async (req, res) => {
           }
         } catch(error) {
           console.log(error);
-          res.status(400).json(error.message);
+          return res.status(400).json(error.message);
         }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -316,20 +316,20 @@ const getTopupHistory = async (req, res) => {
                 topup_at: userTopupHistory[i].createdAt
               });
             }
-            res.status(200).json(output);
+            return res.status(200).json(output);
           }
         } catch(error) {
           console.log(error);
-          res.status(400).json(error.message);
+          return res.status(400).json(error.message);
         }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -356,11 +356,11 @@ const getRechargeHistory = async (req, res) => {
                 recharged_at: userRechargeHistory[i].createdAt
               });
             }
-            res.status(200).json(output);
+            return res.status(200).json(output);
           }
         } catch(error) {
           console.log(error);
-          res.status(400).json(error.message);
+          return res.status(400).json(error.message);
         }
       } catch(error) {
         console.log(error);
@@ -369,7 +369,7 @@ const getRechargeHistory = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -384,11 +384,11 @@ const diet = async (req, res) => {
 
           } catch(error) {
             console.log(error);
-            res.status(400).json(error.message);
+            return res.status(400).json(error.message);
           }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
   }
 };
@@ -404,11 +404,11 @@ const scheduleDiet = async (req, res) => {
 
           } catch(error) {
             console.log(error);
-            res.status(400).json(error.message);
+            return res.status(400).json(error.message);
           }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
   }
 };
@@ -424,11 +424,11 @@ const getTransactionHistory = async (req, res) => {
 
           } catch(error) {
             console.log(error);
-            res.status(400).json(error.message);
+            return res.status(400).json(error.message);
           }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
   }
 };
@@ -444,11 +444,11 @@ const updateSchedule = async (req, res) => {
 
           } catch(error) {
             console.log(error);
-            res.status(400).json(error.message);
+            return res.status(400).json(error.message);
           }
       } catch(error) {
         console.log(error);
-        res.status(400).json(error.message);
+        return res.status(400).json(error.message);
       }
   }
 };
