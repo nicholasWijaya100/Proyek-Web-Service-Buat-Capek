@@ -29,12 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       body_height: {
         type: DataTypes.INTEGER,
       },
-      target_weight: {
-        type: DataTypes.INTEGER,
-      },
-      role: {
-        type: DataTypes.STRING,
-      },
+      // target_weight: {
+      //   type: DataTypes.INTEGER,
+      // },
+      // role: {
+      //   type: DataTypes.STRING,
+      // },
       saldo: {
         type: DataTypes.INTEGER,
       },
@@ -44,7 +44,9 @@ module.exports = (sequelize, DataTypes) => {
       api_key: {
         type: DataTypes.STRING,
       },
-
+      deletedAt: {
+        type: DataTypes.DATE
+      }
       // profile_picture: {
       //   type: DataTypes.STRING,
       // },
@@ -57,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
       createdAt: "createdAt",
       updatedAt: "updatedAt",
-      deletedAt: "deletedAt",
+      //deletedAt: "deletedAt",
     }
   );
 
