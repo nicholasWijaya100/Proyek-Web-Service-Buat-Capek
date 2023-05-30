@@ -558,7 +558,11 @@ const getSet = async (req, res) => {
               min_calories != undefined &&
               max_calories != undefined
             ) {
-              let set = await MenuSet.findAll();
+              let set = await MenuSet.findAll({
+                where: {
+                  menu_set_maker: userdata.username,
+                },
+              });
               let result = [];
               for (let i = 0; i < set.length; i++) {
                 let tempResult = {
@@ -951,6 +955,248 @@ const updateDiet = async (req, res) => {
 
 // =============================================================================
 
+const getDiet = async(req, res) => {
+  var token = req.header('x-auth-token');
+  if(!req.header('x-auth-token')) {
+    res.status(400).json('Authentication token is missing');
+  } else {
+    try{
+        let userdata = jwt.verify(token, JWT_KEY)
+        if(userdata.role != "consultant") {
+          return res.status(403).json('Unauthorized access');
+        } 
+        try{
+          let { id_diet, nama_diet, min_calories, max_calories } = req.query;
+
+          const schema = Joi.object({
+            id_diet: Joi.string().external(checkDietById),
+            nama_diet: Joi.string().external(checkDietByName),
+            min_calories: Joi.number().min(1).max(10000),
+            max_calories: Joi.number().min(1).max(10000),
+          });
+
+          try {
+            await schema.validateAsync(req.query);
+          } catch (error) {
+            return res.status(403).send(error.toString());
+          }
+
+          if(id_diet != "" || id_diet != undefined || id_diet != null) {
+            let set = await Diet.findAll({
+              where: {
+                diet_id: id_diet,
+                diet_maker: userdata.username,
+              },
+            });
+            if(set.length == 0) {
+              return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+            } else {
+              return res.status(200).json({
+                id_diet: set[0].diet_id,
+                nama_diet: set[0].diet_name,
+                total_calories: set[0].diet_total_calories,
+                diet_content: JSON.parse(set[0].diet_content),
+              });
+            }
+          } else if(nama_diet != "" || nama_diet != undefined || nama_diet != null) {
+            if((max_calories == "" || max_calories == undefined || max_calories == null) && 
+            (min_calories == "" || min_calories == undefined || min_calories == null)) {
+              let set = await MenuSet.findAll({
+                where: {
+                  diet_name: { [Op.like]: nama_diet },
+                  diet_maker: userdata.username,
+                },
+              });
+              let result = [];
+              for (let i = 0; i < set.length; i++) {
+                let tempResult = {
+                  id_diet: set[i].diet_id,
+                  nama_diet: set[i].diet_name,
+                  total_calories: set[i].diet_total_calories,
+                  diet_content: JSON.parse(set[i].diet_content),
+                };
+                result.push(tempResult);
+              }
+              if(result.length == 0) {
+                return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+              } else {
+                return res.status(200).json({ result });
+              }
+            } else if(max_calories == "" || max_calories == undefined || max_calories == null) {
+              let set = await MenuSet.findAll({
+                where: {
+                  diet_name: { [Op.like]: nama_diet },
+                  diet_total_calories: { [Op.gte]: min_calories },
+                  diet_maker: userdata.username,
+                },
+              });
+              let result = [];
+              for (let i = 0; i < set.length; i++) {
+                let tempResult = {
+                  id_diet: set[i].diet_id,
+                  nama_diet: set[i].diet_name,
+                  total_calories: set[i].diet_total_calories,
+                  diet_content: JSON.parse(set[i].diet_content),
+                };
+                result.push(tempResult);
+              }
+              if(result.length == 0) {
+                return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+              } else {
+                return res.status(200).json({ result });
+              }
+            } else if(min_calories == "" || min_calories == undefined || min_calories == null) {
+              let set = await MenuSet.findAll({
+                where: {
+                  diet_name: { [Op.like]: nama_diet },
+                  diet_total_calories: { [Op.lte]: max_calories },
+                  diet_maker: userdata.username,
+                },
+              });
+              let result = [];
+              for (let i = 0; i < set.length; i++) {
+                let tempResult = {
+                  id_diet: set[i].diet_id,
+                  nama_diet: set[i].diet_name,
+                  total_calories: set[i].diet_total_calories,
+                  diet_content: JSON.parse(set[i].diet_content),
+                };
+                result.push(tempResult);
+              }
+              if(result.length == 0) {
+                return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+              } else {
+                return res.status(200).json({ result });
+              }
+            } else {
+              let set = await MenuSet.findAll({
+                where: {
+                  diet_name: { [Op.like]: nama_diet },
+                  diet_total_calories: { [Op.gte]: min_calories },
+                  diet_total_calories: { [Op.lte]: max_calories },
+                  diet_maker: userdata.username,
+                },
+              });
+              let result = [];
+              for (let i = 0; i < set.length; i++) {
+                let tempResult = {
+                  id_diet: set[i].diet_id,
+                  nama_diet: set[i].diet_name,
+                  total_calories: set[i].diet_total_calories,
+                  diet_content: JSON.parse(set[i].diet_content),
+                };
+                result.push(tempResult);
+              }
+              if(result.length == 0) {
+                return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+              } else {
+                return res.status(200).json({ result });
+              }
+            }
+          } else if(min_calories != "" || min_calories != undefined || min_calories != null) {
+            if(max_calories == "" || max_calories == undefined || max_calories == null) {
+              let set = await MenuSet.findAll({
+                where: {
+                  diet_total_calories: { [Op.gte]: min_calories },
+                  diet_maker: userdata.username,
+                },
+              });
+              let result = [];
+              for (let i = 0; i < set.length; i++) {
+                let tempResult = {
+                  id_diet: set[i].diet_id,
+                  nama_diet: set[i].diet_name,
+                  total_calories: set[i].diet_total_calories,
+                  diet_content: JSON.parse(set[i].diet_content),
+                };
+                result.push(tempResult);
+              }
+              if(result.length == 0) {
+                return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+              } else {
+                return res.status(200).json({ result });
+              }
+            } else {
+              let set = await MenuSet.findAll({
+                where: {
+                  diet_total_calories: { [Op.gte]: min_calories },
+                  diet_total_calories: { [Op.lte]: max_calories },
+                  diet_maker: userdata.username,
+                },
+              });
+              let result = [];
+              for (let i = 0; i < set.length; i++) {
+                let tempResult = {
+                  id_diet: set[i].diet_id,
+                  nama_diet: set[i].diet_name,
+                  total_calories: set[i].diet_total_calories,
+                  diet_content: JSON.parse(set[i].diet_content),
+                };
+                result.push(tempResult);
+              }
+              if(result.length == 0) {
+                return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+              } else {
+                return res.status(200).json({ result });
+              }
+            }
+          } else if(max_calories != "" || max_calories != undefined || max_calories != null) {
+            let set = await MenuSet.findAll({
+              where: {
+                diet_total_calories: { [Op.lte]: max_calories },
+                diet_maker: userdata.username,
+              },
+            });
+            let result = [];
+            for (let i = 0; i < set.length; i++) {
+              let tempResult = {
+                id_diet: set[i].diet_id,
+                nama_diet: set[i].diet_name,
+                total_calories: set[i].diet_total_calories,
+                diet_content: JSON.parse(set[i].diet_content),
+              };
+              result.push(tempResult);
+            }
+            if(result.length == 0) {
+              return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+            } else {
+              return res.status(200).json({ result });
+            }
+          } else {
+            let set = await MenuSet.findAll({
+              where: {
+                diet_maker: userdata.username,
+              },
+            });
+            let result = [];
+            for (let i = 0; i < set.length; i++) {
+              let tempResult = {
+                id_diet: set[i].diet_id,
+                nama_diet: set[i].diet_name,
+                total_calories: set[i].diet_total_calories,
+                diet_content: JSON.parse(set[i].diet_content),
+              };
+              result.push(tempResult);
+            }
+            if(result.length == 0) {
+              return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+            } else {
+              return res.status(200).json({ result });
+            }
+          }
+        } catch(error) {
+          console.log(error);
+          return res.status(400).json(error.message);
+        }
+    } catch(error) {
+      console.log(error);
+      return res.status(400).json(error.message);
+    }
+  }
+}
+
+// =============================================================================
+
 module.exports = {
   menuSet,
   diet,
@@ -960,4 +1206,5 @@ module.exports = {
   getSet,
   updateDiet,
   updateSet,
+  getDiet,
 };

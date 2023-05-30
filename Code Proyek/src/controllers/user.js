@@ -3,7 +3,36 @@ var jwt = require('jsonwebtoken');
 const sequelize = require("../databases/conn");
 const mod_users = require("../models/user");
 const { User, MenuSet, Diet, TopupHistory, HistoryTransaction, RechargeHistory } = require("../models");
+const { useInflection } = require("sequelize");
 const JWT_KEY = 'KimJisoo';
+
+async function checkDietById(id) {
+  if(id == undefined || id == "" || id == null) {
+    return true
+  } else {
+    let set = await Diet.findOne({
+      where: {
+        diet_id: id,
+      },
+    });
+    if (set == null) throw new Error("diet not found, invalid diet id");
+    else return true;
+  }
+}
+
+async function checkDietByName(name) {
+  if(name == undefined || name == "" || name == null) {
+    return true
+  } else {
+    let set = await Diet.findOne({
+      where: {
+        diet_name: name,
+      },
+    });
+    if (set == null) throw new Error("diet not found, invalid diet name");
+    else return true;
+  }
+}
 
 const register = async (req, res) => {
   var cek = Joi.object({
@@ -100,6 +129,9 @@ const login = async (req, res) => {
           return res.status(200).json({
             username: cekuser[0].username,
             password: cekuser[0].password,
+            body_height: cekuser[0].body_height,
+            body_weight: cekuser[0].body_weight,
+            target_weight: cekuser[0].target_weight,
             birth_date: cekuser[0].birth_date,
             token: token,
           });
@@ -378,18 +410,111 @@ const diet = async (req, res) => {
   if(!req.header('x-auth-token')) {
     res.status(400).json('Authentication token is missing');
   } else {
-      try{
-          let userdata = jwt.verify(token, JWT_KEY)
-          try{
+    try{
+        let userdata = jwt.verify(token, JWT_KEY)
+        try{
+          let { id_diet, nama_diet } = req.query;
 
-          } catch(error) {
-            console.log(error);
-            return res.status(400).json(error.message);
+          const schema = Joi.object({
+            id_diet: Joi.string().external(checkDietById),
+            nama_diet: Joi.string().external(checkDietByName),
+          });
+
+          try {
+            await schema.validateAsync(req.query);
+          } catch (error) {
+            return res.status(403).send(error.toString());
           }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
-      }
+
+          var currentDate = new Date();
+          const calorie_to_maintain_weight = userdata.body_weight * 10 + userdata.body_height * 6.25 - 5 * (currentDate.getFullYear() - userdata.birthDate.getFullYear());
+          if(id_diet != "" || id_diet != undefined || id_diet != null) {
+            let set = await Diet.findAll({
+              where: {
+                diet_id: id_diet,
+              },
+            });
+            if(set.length == 0) {
+              return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+            } else {
+              return res.status(200).json({
+                id_diet: set[0].diet_id,
+                nama_diet: set[0].diet_name,
+                total_calories: set[0].diet_total_calories,
+                diet_content: JSON.parse(set[0].diet_content),
+              });
+            }
+          } else if(nama_diet != "" || nama_diet != undefined || nama_diet != null) {
+            let set = "";
+            if(userdata.target_weight > userdata.body_weight) {
+              set = await MenuSet.findAll({
+                where: {
+                  diet_name: { [Op.like]: nama_diet },
+                  diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
+                },
+              });
+            } else {
+              set = await MenuSet.findAll({
+                where: {
+                  diet_name: { [Op.like]: nama_diet },
+                  diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
+                },
+              });
+            }
+            let result = [];
+            for (let i = 0; i < set.length; i++) {
+              let tempResult = {
+                id_diet: set[i].diet_id,
+                nama_diet: set[i].diet_name,
+                total_calories: set[i].diet_total_calories,
+                diet_content: JSON.parse(set[i].diet_content),
+              };
+              result.push(tempResult);
+            }
+            if(result.length == 0) {
+              return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+            } else {
+              return res.status(200).json({ result });
+            }
+          } else {
+            let set = "";
+            if(userdata.target_weight > userdata.body_weight) {
+              set = await MenuSet.findAll({
+                where: {
+                  diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
+                },
+              });
+            } else {
+              set = await MenuSet.findAll({
+                where: {
+                  diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
+                },
+              });
+            }
+            let result = [];
+            for (let i = 0; i < set.length; i++) {
+              let tempResult = {
+                id_diet: set[i].diet_id,
+                nama_diet: set[i].diet_name,
+                total_calories: set[i].diet_total_calories,
+                diet_content: JSON.parse(set[i].diet_content),
+              };
+              result.push(tempResult);
+            }
+            if(result.length == 0) {
+              return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+            } else {
+              return res.status(200).json({ result });
+            }
+          }
+        } catch(error) {
+          console.log(error);
+          return res.status(400).json(error.message);
+        }
+    } catch(error) {
+      console.log(error);
+      return res.status(400).json(error.message);
+    }
   }
 };
 
