@@ -46,10 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       deletedAt: {
         type: DataTypes.DATE
-      }
-      // profile_picture: {
-      //   type: DataTypes.STRING,
-      // },
+      },
+      profile_picture: {
+         type: DataTypes.STRING,
+      },
     },
     {
       sequelize,

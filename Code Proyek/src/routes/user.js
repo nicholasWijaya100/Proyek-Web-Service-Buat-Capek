@@ -1,5 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const multer = require('multer');
+app = express();
+app.use(express.static("uploads"));
+var mystorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, '../Code Proyek/src/uploads')
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.originalname); 
+    }
+});
+var upd = multer({ 
+    storage: mystorage
+});
+
 const {
   register,
   login,
@@ -15,7 +30,7 @@ const {
   getTopupHistory,
 } = require("../controllers/user");
 
-router.post("/register", register);
+router.post("/register", upd.single('photoprofile'),  register);
 router.post("/login", login);
 router.patch("/update/userdata", updateUserData);
 router.patch("/update/password", updatePassword);
