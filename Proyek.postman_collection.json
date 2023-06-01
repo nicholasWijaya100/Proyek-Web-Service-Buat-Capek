@@ -9,7 +9,7 @@
 			"name": "Admin",
 			"item": [
 				{
-					"name": "addMenuSet",
+					"name": "Add Menu Set",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -37,7 +37,7 @@
 					"response": []
 				},
 				{
-					"name": "getMenu",
+					"name": "Get Menu",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -48,7 +48,7 @@
 					"response": []
 				},
 				{
-					"name": "addDiet",
+					"name": "Add Diet",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -92,7 +92,7 @@
 					"response": []
 				},
 				{
-					"name": "deleteDiet",
+					"name": "Delete Diet",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -103,7 +103,7 @@
 					"response": []
 				},
 				{
-					"name": "getMenuSet",
+					"name": "Get Menu Set",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -114,7 +114,7 @@
 					"response": []
 				},
 				{
-					"name": "updateMenuSet",
+					"name": "Update Menu Set",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -144,6 +144,46 @@
 								}
 							]
 						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Menu Set",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUyODY4NDAsImV4cCI6MTY4NTI5Mzg0MH0.urrkqS7KgGgUe6hWOp0vVu3wuWktpG8muDA_srwVi6U",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/admin/menu_set/MS001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"admin",
+								"menu_set",
+								"MS001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Diet",
+					"request": {
+						"method": "GET",
+						"header": []
 					},
 					"response": []
 				}
@@ -393,6 +433,14 @@
 				},
 				{
 					"name": "Recharge History",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
 					"request": {
 						"method": "GET",
 						"header": []
