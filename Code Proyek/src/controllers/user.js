@@ -58,7 +58,7 @@ const register = async (req, res) => {
     var body_height = req.body.body_height;
     var target_weight = req.body.target_weight;
     var role = req.body.role;
-    var photoprofile = req.file.filename; 
+    var profile_picture = req.file.filename; 
 
     var arrbirth = birth_date.split("/");
     birth_date = arrbirth[2] + "-" + arrbirth[1] + "-" + arrbirth[0];
@@ -89,7 +89,7 @@ const register = async (req, res) => {
           saldo: saldo,
           api_hit: api_hit,
           api_key: api,
-          photoprofile: photoprofile,
+          profile_picture: profile_picture,
         });
         await userbaru.save();
 

@@ -5,7 +5,7 @@ app = express();
 app.use(express.static("uploads"));
 var mystorage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, '../Code Proyek/src/uploads')
+        callback(null, './src/uploads')
     },
     filename: function (req, file, callback) {
         callback(null, file.originalname); 
