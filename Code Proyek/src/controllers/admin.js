@@ -22,7 +22,6 @@ async function checkSetName(name) {
 }
 const menuSet = async (req, res) => {
   let { menu_set_name, menu_list } = req.body;
-
   const schema = Joi.object({
     menu_set_name: Joi.string().external(checkSetName).required(),
     menu_list: Joi.array()

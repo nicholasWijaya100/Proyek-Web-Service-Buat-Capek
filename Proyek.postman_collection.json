@@ -40,9 +40,31 @@
 					"name": "Get Menu",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNDM3NTAsImV4cCI6MTY4NTM1MDc1MH0.vNxFeW7lDdXPS0DIxdIt-5ZANIlRS83_efVtjkMyTFs",
+								"type": "default"
+							}
+						],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:3000/v1/admin/menu?nama_menu=spa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"admin",
+								"menu"
+							],
+							"query": [
+								{
+									"key": "nama_menu",
+									"value": "spa"
+								}
+							]
 						}
 					},
 					"response": []
@@ -51,7 +73,13 @@
 					"name": "Add Diet",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjQxNTM2LCJleHAiOjE2ODY2NDg1MzZ9.qRU-O3be_SG6JPYam5LfkCg045OZg8pnSaZz4B_IWV8",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
@@ -62,7 +90,7 @@
 								},
 								{
 									"key": "breakfast",
-									"value": "MS001",
+									"value": "MS003",
 									"type": "text"
 								},
 								{
@@ -78,10 +106,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/admin/diet",
+							"raw": "http://localhost:3000/v1/admin/diet",
+							"protocol": "http",
 							"host": [
-								"{{HOST}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"v1",
 								"admin",
@@ -94,10 +124,27 @@
 				{
 					"name": "Delete Diet",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNDM3NTAsImV4cCI6MTY4NTM1MDc1MH0.vNxFeW7lDdXPS0DIxdIt-5ZANIlRS83_efVtjkMyTFs",
+								"type": "default"
+							}
+						],
 						"url": {
-							"raw": ""
+							"raw": "http://localhost:3000/v1/admin/diet/D002",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"admin",
+								"diet",
+								"D002"
+							]
 						}
 					},
 					"response": []
@@ -106,32 +153,20 @@
 					"name": "Get Menu Set",
 					"request": {
 						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": ""
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Menu Set",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"action\" : \"add\",\r\n    \"menu_id\" : [\r\n        \"192386\", \r\n        \"419357\"\r\n    ]\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlhpIEppbnBpbmciLCJyb2xlIjoiY29uc3VsdGFudCIsImlhdCI6MTY4NTM0ODk3MCwiZXhwIjoxNjg1MzU1OTcwfQ.totlQB0ehB6iUsFbKXQwRP_peGjmPY6NE72Ym_dNkfg",
+								"type": "default"
 							}
-						},
+						],
 						"url": {
-							"raw": "{{HOST}}/v1/admin/menu_set?:id_menu_set=MS004",
+							"raw": "http://localhost:3000/v1/admin/menu_set?id_menu_set=MS003",
+							"protocol": "http",
 							"host": [
-								"{{HOST}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"v1",
 								"admin",
@@ -139,9 +174,44 @@
 							],
 							"query": [
 								{
-									"key": ":id_menu_set",
-									"value": "MS004"
+									"key": "id_menu_set",
+									"value": "MS003"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Menu Set",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNTE3OTIsImV4cCI6MTY4NTM1ODc5Mn0.mIDWmc5laeC-eXcgNIDOFuAVHl7I8VABPdGn3VH0eeo",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"action\" : \"replace\",\r\n    \"menu_list\" : [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"385239\",\r\n            \"qty\" : \"1\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/admin/menu_set/MS004",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"admin",
+								"menu_set",
+								"MS004"
 							]
 						}
 					},
@@ -154,16 +224,22 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUyODY4NDAsImV4cCI6MTY4NTI5Mzg0MH0.urrkqS7KgGgUe6hWOp0vVu3wuWktpG8muDA_srwVi6U",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNDM3NTAsImV4cCI6MTY4NTM1MDc1MH0.vNxFeW7lDdXPS0DIxdIt-5ZANIlRS83_efVtjkMyTFs",
 								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "urlencoded",
-							"urlencoded": []
+							"urlencoded": [
+								{
+									"key": "delete_if_used",
+									"value": "true",
+									"type": "default"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://localhost:3000/v1/admin/menu_set/MS001",
+							"raw": "http://localhost:3000/v1/admin/menu_set/MS002",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -173,7 +249,7 @@
 								"v1",
 								"admin",
 								"menu_set",
-								"MS001"
+								"MS002"
 							]
 						}
 					},
@@ -198,47 +274,52 @@
 						"method": "POST",
 						"header": [],
 						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
+							"mode": "formdata",
+							"formdata": [
 								{
 									"key": "username",
-									"value": "akun1",
-									"type": "default"
+									"value": "Mao Zedon",
+									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "123",
-									"type": "default"
+									"value": "famine",
+									"type": "text"
 								},
 								{
 									"key": "gender",
 									"value": "MALE",
-									"type": "default"
+									"type": "text"
 								},
 								{
 									"key": "birth_date",
-									"value": "16/08/2022",
-									"type": "default"
+									"value": "28/04/1937",
+									"type": "text"
 								},
 								{
 									"key": "body_weight",
-									"value": "44",
-									"type": "default"
+									"value": "70",
+									"type": "text"
 								},
 								{
 									"key": "body_height",
-									"value": "155",
-									"type": "default"
+									"value": "170",
+									"type": "text"
 								},
 								{
-									"key": "target_weigth",
-									"value": "",
-									"type": "default"
+									"key": "target_weight",
+									"value": "80",
+									"type": "text"
 								},
 								{
-									"key": "is_vegetarian",
-									"value": "",
-									"type": "default"
+									"key": "role",
+									"value": "consultant",
+									"type": "text"
+								},
+								{
+									"key": "photoprofile",
+									"type": "file",
+									"src": "/C:/Users/nichw/Downloads/move_updown.jpg"
 								}
 							]
 						},
@@ -268,12 +349,12 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "eu",
+									"value": "Mao Zedon",
 									"type": "default"
 								},
 								{
 									"key": "password",
-									"value": "123",
+									"value": "reddy",
 									"type": "default"
 								}
 							]
@@ -298,29 +379,32 @@
 					"name": "Update User Data",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "username",
-									"value": "eu",
-									"type": "default"
-								},
-								{
-									"key": "password",
-									"value": "123",
-									"type": "default"
-								},
-								{
 									"key": "body_weight",
-									"value": "",
+									"value": "120",
 									"type": "default"
 								},
 								{
 									"key": "body_height",
 									"value": "",
-									"type": "default"
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "target_weight",
+									"value": "",
+									"type": "default",
+									"disabled": true
 								}
 							]
 						},
@@ -345,23 +429,19 @@
 					"name": "Top Up",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "username",
-									"value": "akun1",
-									"type": "default"
-								},
-								{
-									"key": "password",
-									"value": "123",
-									"type": "default"
-								},
-								{
 									"key": "topup",
-									"value": "10000",
+									"value": "20000",
 									"type": "default"
 								}
 							]
@@ -386,23 +466,19 @@
 					"name": "Recharge",
 					"request": {
 						"method": "PATCH",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "username",
-									"value": "akun1",
-									"type": "default"
-								},
-								{
-									"key": "password",
-									"value": "123",
-									"type": "default"
-								},
-								{
 									"key": "recharge",
-									"value": "3",
+									"value": "4",
 									"type": "default"
 								}
 							]
@@ -427,7 +503,26 @@
 					"name": "Topup History",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjQxNTM2LCJleHAiOjE2ODY2NDg1MzZ9.qRU-O3be_SG6JPYam5LfkCg045OZg8pnSaZz4B_IWV8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/v1/user/topup_history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"topup_history"
+							]
+						}
 					},
 					"response": []
 				},
@@ -435,15 +530,96 @@
 					"name": "Recharge History",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjQxNTM2LCJleHAiOjE2ODY2NDg1MzZ9.qRU-O3be_SG6JPYam5LfkCg045OZg8pnSaZz4B_IWV8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/v1/user/recharge_history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"recharge_history"
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "New Request",
+					"name": "Update Password",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "new_password",
+									"value": "reddy",
+									"type": "default"
+								},
+								{
+									"key": "confirm_new_password",
+									"value": "reddy",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/user/update/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"update",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Diet",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/v1/user/diet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"diet"
+							]
+						}
 					},
 					"response": []
 				}
