@@ -28,6 +28,7 @@ const {
   getTransactionHistory,
   userInformation,
   getTopupHistory,
+  getProfpic,
 } = require("../controllers/user");
 
 const middleware = require('../middlleware/middlleware');
@@ -44,5 +45,6 @@ router.get("/recharge_history", [middleware], getRechargeHistory);
 router.get("/transaction_history", [middleware], getTransactionHistory);
 router.get("/userinfo", [middleware],userInformation );
 router.get("/topup_history", [middleware], getTopupHistory);
+router.get("/profile_picture", [middleware], getProfpic)
 
 module.exports = router;

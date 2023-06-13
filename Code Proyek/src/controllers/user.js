@@ -577,5 +577,6 @@ module.exports = {
   getRechargeHistory,
   getTransactionHistory,
   userInformation,
+  getProfpic,
   getTopupHistory,
 };
