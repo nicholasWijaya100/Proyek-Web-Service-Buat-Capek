@@ -166,47 +166,26 @@ const updateUserData = async (req, res) => {
     var body_weight = req.body.body_weight;
     var body_height = req.body.body_height;
     var target_weight = req.body.target_weight;
-    var token = req.header('x-auth-token');
-
-    if(!req.header('x-auth-token')) {
-      res.status(400).json('Authentication token is missing');
-    } else {
-      try{
-        let userdata = jwt.verify(token, JWT_KEY)
-        try{
-          var cekuser = await User.findAll({ where: { username: userdata.username } });
-          if(cekuser.length <= 0) {
-            res.status(400).send({ msg: "User not registered in database" });
-          } else {
-            if (body_weight != "") {
-              User.update(
-                { body_weight: req.body.body_weight },
-                { where: { username: userdata.username } }
-              );
-            }
-            if (body_height != "") {
-              User.update(
-                { body_height: req.body.body_height },
-                { where: { username: userdata.username } }
-              );
-            }
-            if (target_weight != "") {
-              User.update(
-                { target_weight: req.body.target_weight },
-                { where: { username: userdata.username } }
-              );
-            }
-            return res.status(200).json("Berhasil Update data");
-          }
-        } catch(error) {
-          console.log(error);
-          return res.status(500).json(error.message);
-        }
-      } catch(error) {
-        console.log(error);
-        return res.status(500).json(error.message);
-      }
+    var userdata = req.body.user;
+    if (body_weight != "") {
+      User.update(
+        { body_weight: req.body.body_weight },
+        { where: { username: userdata.username } }
+      );
     }
+    if (body_height != "") {
+      User.update(
+        { body_height: req.body.body_height },
+        { where: { username: userdata.username } }
+      );
+    }
+    if (target_weight != "") {
+      User.update(
+        { target_weight: req.body.target_weight },
+        { where: { username: userdata.username } }
+      );
+    }
+    return res.status(200).json("Berhasil Update data");
   } catch (error) {
     console.log(error);
     return res.status(500).json(error.message);
@@ -601,24 +580,15 @@ const getTransactionHistory = async (req, res) => {
   }
 };
 
-const updateSchedule = async (req, res) => {
-  var token = req.header('x-auth-token');
-  if(!req.header('x-auth-token')) {
-    res.status(400).json('Authentication token is missing');
-  } else {
-      try{
-          let userdata = jwt.verify(token, JWT_KEY)
-          try{
-
-          } catch(error) {
-            console.log(error);
-            return res.status(400).json(error.message);
-          }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
-      }
+const userInformation = async (req, res) => {
+  const token = req.header('x-auth-token');
+  let tokenData = undefined;
+  try{
+    tokenData = jwt.verify(token, JWT_KEY);
+  }catch(error){
+    res.status(401).send("Invalid JWT TOken")
   }
+  const user = User.findByPk()
 };
 
 module.exports = {
@@ -632,6 +602,6 @@ module.exports = {
   getRechargeHistory,
   scheduleDiet,
   getTransactionHistory,
-  updateSchedule,
+  userInformation,
   getTopupHistory,
 };

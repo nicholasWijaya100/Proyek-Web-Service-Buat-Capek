@@ -26,9 +26,11 @@ const {
   getRechargeHistory,
   scheduleDiet,
   getTransactionHistory,
-  updateSchedule,
+  userInformation,
   getTopupHistory,
 } = require("../controllers/user");
+
+const middleware = require('../middlleware/middlleware');
 
 router.post("/register", upd.single('photoprofile'),  register);
 router.post("/login", login);
@@ -40,7 +42,7 @@ router.get("/diet", diet);
 router.get("/recharge_history", getRechargeHistory);
 router.post("/schedule_diet", scheduleDiet);
 router.get("/transaction_history", getTransactionHistory);
-router.put("/schedule_diet", updateSchedule);
+router.get("/userinfo",userInformation );
 router.get("/topup_history", getTopupHistory);
 
 module.exports = router;
