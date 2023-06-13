@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       diet_maker: {
         type: DataTypes.STRING
+      },
+      diet_price: {
+        type: DataTypes.INTEGER
       }
     },
     {

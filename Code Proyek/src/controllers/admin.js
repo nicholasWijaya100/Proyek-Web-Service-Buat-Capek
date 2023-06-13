@@ -60,6 +60,7 @@ const menuSet = async (req, res) => {
                   `https://api.spoonacular.com/food/menuItems/${menu_list[i].id}?apiKey=${ApiKey}&addMenuItemInformation=true`
                 );
               } catch (error) {
+                console.log(error);
                 return res.status(400).json({ message: "Invalid ID" });
               }
 
@@ -139,13 +140,14 @@ async function checkDietName(name) {
 }
 
 const diet = async (req, res) => {
-  let { diet_name, breakfast, lunch, dinner } = req.body;
+  let { diet_name, breakfast, lunch, dinner, diet_price } = req.body;
 
   const schema = Joi.object({
     diet_name: Joi.string().external(checkDietName).required(),
     breakfast: Joi.string().external(checkMenuSet).required(),
     lunch: Joi.string().external(checkMenuSet).required(),
     dinner: Joi.string().external(checkMenuSet).required(),
+    diet_price: Joi.number().min(0).required(),
   });
 
   try {
@@ -201,12 +203,14 @@ const diet = async (req, res) => {
               diet_content: JSON.stringify(dietContent),
               diet_total_calories: totalCalories,
               diet_maker: userdata.username,
+              diet_price: diet_price,
             });
 
             return res.status(200).json({
               message: "diet added",
               diet_id: idDiet,
               diet_name: diet_name,
+              diet_price: diet_price,
               diet_calories: totalCalories,
               diet_content: dietContent,
             });

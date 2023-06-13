@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   {
     sequelize,
     modelName: 'HistoryTransaction',
-    tableName: "history_transaction",
+    tableName: "history_transactions",
     timestamps: true,
     paranoid: true,
     createdAt: "createdAt",

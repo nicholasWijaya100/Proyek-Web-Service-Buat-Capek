@@ -23,6 +23,7 @@ const {
   topup,
   recharge,
   diet,
+  buyDiet,
   getRechargeHistory,
   getTransactionHistory,
   userInformation,
@@ -38,6 +39,7 @@ router.patch("/update/password", [middleware], updatePassword);
 router.patch("/topup", [middleware], topup);
 router.patch("/recharge", [middleware], recharge);
 router.get("/diet", [middleware], diet);
+router.post("/buy/diet", [middleware], buyDiet);
 router.get("/recharge_history", [middleware], getRechargeHistory);
 router.get("/transaction_history", [middleware], getTransactionHistory);
 router.get("/userinfo", [middleware],userInformation );

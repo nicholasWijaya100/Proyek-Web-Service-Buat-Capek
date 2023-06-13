@@ -5,6 +5,7 @@ const mod_users = require("../models/user");
 const { User, MenuSet, Diet, TopupHistory, HistoryTransaction, RechargeHistory } = require("../models");
 const { useInflection } = require("sequelize");
 const { where } = require("sequelize");
+const { Op } = require("sequelize");
 const JWT_KEY = 'KimJisoo';
 
 async function checkDietById(id) {
@@ -356,8 +357,8 @@ const diet = async (req, res) => {
       let { id_diet, nama_diet } = req.query;
 
       const schema = Joi.object({
-        id_diet: Joi.string().external(checkDietById),
-        nama_diet: Joi.string().external(checkDietByName),
+        id_diet: Joi.string(),
+        nama_diet: Joi.string(),
       }).options({ stripUnknown: true });
 
       try {
@@ -368,35 +369,17 @@ const diet = async (req, res) => {
 
       var currentDate = new Date();
       const calorie_to_maintain_weight = userdata.body_weight * 10 + userdata.body_height * 6.25 - 5 * (currentDate.getFullYear() - userdata.birth_date.getFullYear());
-      if(id_diet != "" || id_diet != undefined || id_diet != null) {
-        let set = await Diet.findAll({
-          where: {
-            diet_id: id_diet,
-          },
-        });
-        if(set.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
-        } else {
-          return res.status(200).json({
-            id_diet: set[0].diet_id,
-            nama_diet: set[0].diet_name,
-            total_calories: set[0].diet_total_calories,
-            diet_content: JSON.parse(set[0].diet_content),
-          });
-        }
-      } else if(nama_diet != "" || nama_diet != undefined || nama_diet != null) {
+      if(id_diet == undefined && nama_diet == undefined) {
         let set = "";
         if(userdata.target_weight > userdata.body_weight) {
-          set = await MenuSet.findAll({
+          set = await Diet.findAll({
             where: {
-              diet_name: { [Op.like]: nama_diet },
               diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
             },
           });
         } else {
-          set = await MenuSet.findAll({
+          set = await Diet.findAll({
             where: {
-              diet_name: { [Op.like]: nama_diet },
               diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
             },
           });
@@ -416,17 +399,35 @@ const diet = async (req, res) => {
         } else {
           return res.status(200).json({ result });
         }
-      } else {
+      } else if(id_diet != undefined) {
+        let set = await Diet.findAll({
+          where: {
+            diet_id: id_diet,
+          },
+        });
+        if(set.length == 0) {
+          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        } else {
+          return res.status(200).json({
+            id_diet: set[0].diet_id,
+            nama_diet: set[0].diet_name,
+            total_calories: set[0].diet_total_calories,
+            diet_content: JSON.parse(set[0].diet_content),
+          });
+        }
+      } else if(nama_diet != undefined) {
         let set = "";
         if(userdata.target_weight > userdata.body_weight) {
-          set = await MenuSet.findAll({
+          set = await Diet.findAll({
             where: {
+              diet_name: { [Op.like]: `%${nama_diet}%` },
               diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
             },
           });
         } else {
-          set = await MenuSet.findAll({
+          set = await Diet.findAll({
             where: {
+              diet_name: { [Op.like]: `%${nama_diet}%` },
               diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
             },
           });
@@ -453,36 +454,116 @@ const diet = async (req, res) => {
     }
 };
 
-const getTransactionHistory = async (req, res) => {
-  var token = req.header('x-auth-token');
-  if(!req.header('x-auth-token')) {
-    res.status(400).json('Authentication token is missing');
-  } else {
-      try{
-          let userdata = jwt.verify(token, JWT_KEY)
-          try{
+const buyDiet = async (req, res) => {
+  let userdata = req.body.user;
 
-          } catch(error) {
-            console.log(error);
-            return res.status(400).json(error.message);
-          }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
-      }
+  const schema = Joi.object({
+    id_diet: Joi.string().external(checkDietById).required(),
+  }).options({ stripUnknown: true });
+
+  var id_diet = req.body.id_diet;
+
+  try {
+    await schema.validateAsync(req.body);
+  } catch (error) {
+    return res.status(403).send(error.toString());
+  }
+
+  var transkasibaru = HistoryTransaction.build({
+    username: userdata.username,
+    diet_id: id_diet,
+  });
+  await transkasibaru.save();
+
+  res.status(201).json("Transaction Successful");
+}
+
+const getTransactionHistory = async (req, res) => {
+  var userdata = req.body.user;
+  var username = userdata.username;
+  var transaction = [];
+
+  var hasil = await HistoryTransaction.findAll({
+    where: {
+      username: username,
+    },
+  });
+
+  if (hasil.length > 0) {
+    for (var i = 0; i < hasil.length; i++) {
+      // Temp Variables
+      var diet_id = hasil[i].diet_id;
+      var transaction_id = hasil[i].history_transaction_id;
+
+      //Cek Diet name from temp variables
+      var hasil_diet = await Diet.findAll({
+        where: {
+          diet_id: diet_id,
+        },
+      });
+      var diet_name = hasil_diet[0].diet_name;
+      var tempTrans = {
+        transaction_id: transaction_id,
+        diet_name: diet_name,
+      };
+
+      transaction.push(tempTrans);
+    }
+
+    // Output
+    res.status(200).send(transaction);
+  } else {
+    res.status(200).send("No transaction recorded!");
   }
 };
 
 const userInformation = async (req, res) => {
-  const token = req.header('x-auth-token');
-  let tokenData = undefined;
-  try{
-    tokenData = jwt.verify(token, JWT_KEY);
-  }catch(error){
-    res.status(401).send("Invalid JWT TOken")
-  }
-  const user = User.findByPk()
-};
+  var userdata = req.body.user;
+  var username = userdata.username;
+  var gender = userdata.gender;
+  var birth_date = userdata.birth_date;
+  var body_weight = userdata.body_weight;
+  var body_height = userdata.body_height;
+  var target_weight = userdata.target_weight;
+  var role = userdata.role;
+  var saldo = userdata.saldo;
+  var api_hit = userdata.api_hit;
+  const pengguna_nama = userdata.username;
+  const lokasinya = `./src/uploads/${pengguna_nama}.jpg`;
+  res
+    .status(200)
+    .json({
+      Username: username,
+      Gender: gender,
+      "Birth Date": birth_date,
+      Weight: body_weight,
+      Height: body_height,
+      "Target Weight": target_weight,
+      Role: role,
+      Saldo: saldo,
+      "Api Hit": api_hit,
+    })
+    .sendFile(lokasinya, { root: "." });
+  };
+
+  const getProfpic = async (req, res) => {
+    var token = req.header("x-auth-token");
+    var userdata;
+    if (!req.header("x-auth-token")) {
+      res.status(400).json("Authentication token is missing");
+    } else {
+      try {
+        userdata = jwt.verify(token, JWT_KEY);
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json(error.message);
+      }
+      const pengguna_nama = userdata.username;
+      console.log(pengguna_nama);
+      const lokasinya = `./src/uploads/${pengguna_nama}.jpg`;
+      return res.status(200).sendFile(lokasinya, { root: "." });
+    }
+  };
 
 module.exports = {
   register,
@@ -492,6 +573,7 @@ module.exports = {
   topup,
   recharge,
   diet,
+  buyDiet,
   getRechargeHistory,
   getTransactionHistory,
   userInformation,
