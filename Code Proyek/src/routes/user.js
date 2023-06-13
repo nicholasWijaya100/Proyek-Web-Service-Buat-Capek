@@ -24,7 +24,6 @@ const {
   recharge,
   diet,
   getRechargeHistory,
-  scheduleDiet,
   getTransactionHistory,
   userInformation,
   getTopupHistory,
@@ -35,14 +34,13 @@ const middleware = require('../middlleware/middlleware');
 router.post("/register", upd.single('photoprofile'),  register);
 router.post("/login", login);
 router.patch("/update/userdata", [middleware], updateUserData);
-router.patch("/update/password", updatePassword);
-router.patch("/topup", topup);
-router.patch("/recharge", recharge);
-router.get("/diet", diet);
-router.get("/recharge_history", getRechargeHistory);
-router.post("/schedule_diet", scheduleDiet);
-router.get("/transaction_history", getTransactionHistory);
-router.get("/userinfo",userInformation );
-router.get("/topup_history", getTopupHistory);
+router.patch("/update/password", [middleware], updatePassword);
+router.patch("/topup", [middleware], topup);
+router.patch("/recharge", [middleware], recharge);
+router.get("/diet", [middleware], diet);
+router.get("/recharge_history", [middleware], getRechargeHistory);
+router.get("/transaction_history", [middleware], getTransactionHistory);
+router.get("/userinfo", [middleware],userInformation );
+router.get("/topup_history", [middleware], getTopupHistory);
 
 module.exports = router;

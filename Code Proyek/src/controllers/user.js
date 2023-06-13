@@ -193,94 +193,62 @@ const updateUserData = async (req, res) => {
 };
 
 const updatePassword = async (req, res) => {
-  var username = req.body.username;
-  var password = req.body.password;
   var new_password = req.body.new_password;
   var confirm_new_password = req.body.confirm_new_password;
 
   var cek = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
     new_password: Joi.string().required(),
     confirm_new_password: Joi.ref('new_password')
-  });
+  }).options({ stripUnknown: true });
   try{
     await cek.validateAsync(req.body);
-
-    // Check Username and Password
-    let checker = await User.findAll({
-      where: {
-          username: username,
-          password: password
-      }
-    }) 
-    console.log(checker.length);
-    if(checker.length>0){
-
-      // Update Password
-      const updating = await User.update(
-        { password: new_password },
-        { where: { username: username } }
-      );
-
-      res.status(200).send({ msg: "Password succesfully updated" });
-
-    }else{
-      res.status(404).send({ msg: "Username or Password incorrect" });
-    }
-    
   }catch(error){
     console.log(error);
     return res.status(500).json(error.message);
   }
+
+  User.update(
+    { password: new_password },
+    { where: { username: req.body.user.username } }
+  );
+
+  res.status(200).send({ msg: "Password succesfully updated" });
 };
 
 const topup = async (req, res) => {
   var cek = Joi.object({
     topup: Joi.number().min(10000).required(),
-  });
+  }).options({ stripUnknown: true });
   try {
     await cek.validateAsync(req.body);
-
     var topup = req.body.topup;
-    var token = req.header('x-auth-token');
+    var userdata = req.body.user;
+    try{
+      var cekuser = await User.findAll({ where: { username: userdata.username } });
+      if(cekuser.length <= 0) {
+        res.status(400).send({ msg: "User not registered in database" });
+      } else if(topup <= 0) {
+        res.status(400).send({ msg: "Minimal topup must be at least $1" });
+      } else {
+        User.update(
+          { saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup) },
+          { where: { username: userdata.username } }
+        );
 
-    if(!req.header('x-auth-token')) {
-      res.status(400).json('Authentication token is missing');
-    } else {
-      try{
-        let userdata = jwt.verify(token, JWT_KEY)
-        try{
-          var cekuser = await User.findAll({ where: { username: userdata.username } });
-          if(cekuser.length <= 0) {
-            res.status(400).send({ msg: "User not registered in database" });
-          } else if(topup <= 0) {
-            res.status(400).send({ msg: "Minimal topup must be at least $1" });
-          } else {
-            User.update(
-              { saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup) },
-              { where: { username: userdata.username } }
-            );
+        var topuphistorybaru = TopupHistory.build({
+          username: userdata.username,
+          amount: topup,
+        });
+        await topuphistorybaru.save();
 
-            var topuphistorybaru = TopupHistory.build({
-              username: userdata.username,
-              amount: topup,
-            });
-            await topuphistorybaru.save();
-  
-            return res.status(200).json({
-              username: userdata.username,
-              saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup),
-            });
-          }
-        } catch(error) {
-          console.log(error);
-          return res.status(400).json(error.message);
-        }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
+        return res.status(200).json({
+          username: userdata.username,
+          saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup),
+        });
       }
+    } catch(error) {
+      console.log(error);
+      return res.status(400).json(error.message);
     }
   } catch (error) {
     console.log(error);
@@ -291,96 +259,67 @@ const topup = async (req, res) => {
 const recharge = async (req, res) => {
   var cek = Joi.object({
     recharge: Joi.number().min(1).required(),
-  });
+  }).options({ stripUnknown: true });
   try {
     await cek.validateAsync(req.body);
-
-    var recharge = req.body.recharge;
-    var token = req.header('x-auth-token');
-
-    if(!req.header('x-auth-token')) {
-      res.status(400).json('Authentication token is missing');
-    } else {
-      try{
-        let userdata = jwt.verify(token, JWT_KEY)
-        try{
-          var cekuser = await User.findAll({ where: { username: userdata.username } });
-          if(cekuser.length <= 0) {
-            res.status(400).json({ msg: "User not registered in database" });
-          } else if(recharge > cekuser[0].saldo) {
-            res.status(400).json({ msg: "Insufficient account balance" });
-          } else {
-            var biaya = recharge * 10000;
-            var sisa_saldo = cekuser[0].saldo - biaya;
-            User.update(
-              {
-                api_hit: parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
-                saldo: sisa_saldo,
-              },
-              { where: { username: userdata.username } }
-            );
-
-            var rechargehistorybaru = RechargeHistory.build({
-              username: userdata.username,
-              cash_used: biaya,
-              exchanged_hits: recharge
-            });
-            await rechargehistorybaru.save();
-
-            return res.status(200).json({
-              username: userdata.username,
-              sisa_saldo: sisa_saldo,
-              biaya: biaya,
-              kuota: parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
-            });
-          }
-        } catch(error) {
-          console.log(error);
-          return res.status(400).json(error.message);
-        }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
-      }
-    }
   } catch (error) {
     console.log(error);
     return res.status(500).json(error.message);
   }
+
+  var recharge = req.body.recharge;
+  var userdata = req.body.user;
+
+  try{
+    var cekuser = await User.findAll({ where: { username: userdata.username } });
+    if(cekuser.length <= 0) {
+      res.status(400).json({ msg: "User not registered in database" });
+    } else if(recharge > cekuser[0].saldo) {
+      res.status(400).json({ msg: "Insufficient account balance" });
+    } else {
+      var biaya = recharge * 10000;
+      var sisa_saldo = cekuser[0].saldo - biaya;
+      User.update(
+        {
+          api_hit: parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
+          saldo: sisa_saldo,
+        },
+        { where: { username: userdata.username } }
+      );
+
+      var rechargehistorybaru = RechargeHistory.build({
+        username: userdata.username,
+        cash_used: biaya,
+        exchanged_hits: recharge
+      });
+      await rechargehistorybaru.save();
+
+      return res.status(200).json({
+        username: userdata.username,
+        sisa_saldo: sisa_saldo,
+        biaya: biaya,
+        kuota: parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
+      });
+    }
+  } catch(error) {
+    console.log(error);
+    return res.status(400).json(error.message);
+  }
 };
 
 const getTopupHistory = async (req, res) => {
+  let userdata = req.body.user
   try {
-    var token = req.header('x-auth-token');
-    if(!req.header('x-auth-token')) {
-      res.status(400).json('Authentication token is missing');
-    } else {
-      try{
-        let userdata = jwt.verify(token, JWT_KEY)
-        try{
-          var user = await User.findAll({ where: { username: userdata.username } });
-          if(user.length == 0) {
-            res.status(400).json({ msg: "User not registered in database" })
-          } else {
-            var userTopupHistory = await TopupHistory.findAll({ where: { username: user[0].username } });
-            var output = [];
-            for(var i = 0; i < userTopupHistory.length; i++) {
-              output.push({
-                amount: userTopupHistory[i].amount,
-                topup_at: userTopupHistory[i].createdAt
-              });
-            }
-            return res.status(200).json(output);
-          }
-        } catch(error) {
-          console.log(error);
-          return res.status(400).json(error.message);
-        }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
+    var user = await User.findAll({ where: { username: userdata.username } });
+      var userTopupHistory = await TopupHistory.findAll({ where: { username: userdata.username } });
+      var output = [];
+      for(var i = 0; i < userTopupHistory.length; i++) {
+        output.push({
+          amount: userTopupHistory[i].amount,
+          topup_at: userTopupHistory[i].createdAt
+        });
       }
-    }
+      return res.status(200).json(output);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error.message);
@@ -388,43 +327,27 @@ const getTopupHistory = async (req, res) => {
 };
 
 const getRechargeHistory = async (req, res) => {
-
-  try {
-    var token = req.header('x-auth-token');
-    if(!req.header('x-auth-token')) {
-      res.status(400).json('Authentication token is missing');
-    } else {
-      try{
-        let userdata = jwt.verify(token, JWT_KEY)
-        try{
-          var user = await User.findAll({ where: { username: userdata.username } });
-          if(user.length == 0) {
-            res.status(400).json({ msg: "User not registered in database" })
-          } else {
-            var userRechargeHistory = await RechargeHistory.findAll({ where: { username: user[0].username } });
-            var output = [];
-            for(var i = 0; i < userRechargeHistory.length; i++) {
-              output.push({
-                cost_of_recharge: userRechargeHistory[i].cash_used,
-                api_hits_exchanged: userRechargeHistory[i].exchanged_hits,
-                recharged_at: userRechargeHistory[i].createdAt
-              });
-            }
-            return res.status(200).json(output);
-          }
-        } catch(error) {
-          console.log(error);
-          return res.status(400).json(error.message);
+    let userdata = req.body.user
+    try{
+      var user = await User.findAll({ where: { username: userdata.username } });
+      if(user.length == 0) {
+        res.status(400).json({ msg: "User not registered in database" })
+      } else {
+        var userRechargeHistory = await RechargeHistory.findAll({ where: { username: userdata.username } });
+        var output = [];
+        for(var i = 0; i < userRechargeHistory.length; i++) {
+          output.push({
+            cost_of_recharge: userRechargeHistory[i].cash_used,
+            api_hits_exchanged: userRechargeHistory[i].exchanged_hits,
+            recharged_at: userRechargeHistory[i].createdAt
+          });
         }
-      } catch(error) {
-        console.log(error);
-        res.status(400).json(error.message);
+        return res.status(200).json(output);
       }
+    } catch(error) {
+      console.log(error);
+      return res.status(400).json(error.message);
     }
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error.message);
-  }
 };
 
 const diet = async (req, res) => {
@@ -440,7 +363,7 @@ const diet = async (req, res) => {
           const schema = Joi.object({
             id_diet: Joi.string().external(checkDietById),
             nama_diet: Joi.string().external(checkDietByName),
-          });
+          }).options({ stripUnknown: true });
 
           try {
             await schema.validateAsync(req.query);
@@ -540,26 +463,6 @@ const diet = async (req, res) => {
   }
 };
 
-const scheduleDiet = async (req, res) => {
-  var token = req.header('x-auth-token');
-  if(!req.header('x-auth-token')) {
-    res.status(400).json('Authentication token is missing');
-  } else {
-      try{
-          let userdata = jwt.verify(token, JWT_KEY)
-          try{
-
-          } catch(error) {
-            console.log(error);
-            return res.status(400).json(error.message);
-          }
-      } catch(error) {
-        console.log(error);
-        return res.status(400).json(error.message);
-      }
-  }
-};
-
 const getTransactionHistory = async (req, res) => {
   var token = req.header('x-auth-token');
   if(!req.header('x-auth-token')) {
@@ -600,7 +503,6 @@ module.exports = {
   recharge,
   diet,
   getRechargeHistory,
-  scheduleDiet,
   getTransactionHistory,
   userInformation,
   getTopupHistory,
