@@ -34,7 +34,7 @@ const middleware = require('../middlleware/middlleware');
 
 router.post("/register", upd.single('photoprofile'),  register);
 router.post("/login", login);
-router.patch("/update/userdata", updateUserData);
+router.patch("/update/userdata", [middleware], updateUserData);
 router.patch("/update/password", updatePassword);
 router.patch("/topup", topup);
 router.patch("/recharge", recharge);

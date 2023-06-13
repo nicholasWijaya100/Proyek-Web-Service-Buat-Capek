@@ -159,7 +159,7 @@ const updateUserData = async (req, res) => {
     body_weight: Joi.number(),
     body_height: Joi.number(),
     target_weight: Joi.number(),
-  });
+  }).options({ stripUnknown: true });
   try {
     await cek.validateAsync(req.body);
 
@@ -170,7 +170,7 @@ const updateUserData = async (req, res) => {
     if (body_weight != "") {
       User.update(
         { body_weight: req.body.body_weight },
-        { where: { username: userdata.username } }
+        { where: { username: userdata.username} }
       );
     }
     if (body_height != "") {
@@ -182,7 +182,7 @@ const updateUserData = async (req, res) => {
     if (target_weight != "") {
       User.update(
         { target_weight: req.body.target_weight },
-        { where: { username: userdata.username } }
+        { where: { username: userdata.username} }
       );
     }
     return res.status(200).json("Berhasil Update data");
