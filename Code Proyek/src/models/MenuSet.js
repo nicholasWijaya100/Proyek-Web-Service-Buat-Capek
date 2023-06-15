@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
       menu_set_total_calories: {
         type: DataTypes.INTEGER,
       },
-      // menu_set_maker: {
-      //   type: DataTypes.STRING
-      // }
+      menu_set_maker: {
+         type: DataTypes.STRING
+      }
     },
     {
       sequelize,
