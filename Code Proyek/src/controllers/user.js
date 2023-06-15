@@ -476,6 +476,7 @@ async function checkUserHasEnoughMoneyAndDietId(id_diet, helpers, username) {
 const buyDiet = async (req, res) => {
   let id_diet = req.body.id_diet;
   let userdata = req.body.user;
+  const adminFee = 2000;
 
   const schema = Joi.object({
     id_diet: Joi.string().external((value, helpers) => {
@@ -499,14 +500,14 @@ const buyDiet = async (req, res) => {
   });
 
   User.update(
-    { saldo: parseInt(userdata.saldo) - parseInt(boughtDiet.diet_price) - 2000 },
+    { saldo: parseInt(userdata.saldo) - parseInt(boughtDiet.diet_price) - adminFee },
     { where: { username: userdata.username } }
   );
 
   var transkasibaru = HistoryTransaction.build({
     username: userdata.username,
     diet_id: id_diet,
-    total_cost: parseInt(boughtDiet.diet_price) + 2000,
+    total_cost: parseInt(boughtDiet.diet_price) + adminFee,
   });
   await transkasibaru.save();
 
