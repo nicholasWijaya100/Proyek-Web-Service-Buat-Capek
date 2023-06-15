@@ -253,7 +253,7 @@ const topup = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(400).json(error.message);
+    return res.status(500).json(error.message);
   }
 };
 
@@ -347,7 +347,7 @@ const getRechargeHistory = async (req, res) => {
       }
     } catch(error) {
       console.log(error);
-      return res.status(400).json(error.message);
+      return res.status(500).json(error.message);
     }
 };
 
@@ -450,7 +450,7 @@ const diet = async (req, res) => {
       }
     } catch(error) {
       console.log(error);
-      return res.status(400).json(error.message);
+      return res.status(500).json(error.message);
     }
 };
 
@@ -487,7 +487,7 @@ const buyDiet = async (req, res) => {
   try {
     await schema.validateAsync(req.body);
   } catch (error) {
-    return res.status(403).send(error.toString());
+    return res.status(400).send(error.toString());
   }
 
   let boughtDiet = await Diet.findOne({
