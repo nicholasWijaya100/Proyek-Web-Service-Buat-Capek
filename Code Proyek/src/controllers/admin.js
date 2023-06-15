@@ -539,9 +539,7 @@ const getSet = async (req, res) => {
           total_calories: set[i].menu_set_total_calories,
           menu_content: JSON.parse(set[i].menu_content),
         };
-        if(tempResult.menu_set_maker == userdata.username) {
-          result.push(tempResult);
-        }
+        result.push(tempResult);
       }
       if(result.length == 0) {
         return res.status(200).json({msg: "Oops it seems we didn't find anything"});
