@@ -496,7 +496,7 @@ async function checkUserHasEnoughMoneyAndDietId(id_diet, helpers, username) {
       username: username,
     },
   });
-  if (diet == null) throw new Error("menu set not found");
+  if (diet == null) throw new Error("diet not found");
   else if (user.saldo < diet.diet_price + 2000)
     throw new Error("User does not have enough money to buy diet");
   else return true;
@@ -576,11 +576,10 @@ const getTransactionHistory = async (req, res) => {
         },
       });
       var diet_name = hasil_diet[0].diet_name;
-      var diet_price = hasil_diet[0].diet_price;
       var tempTrans = {
         transaction_id: transaction_id,
         diet_name: diet_name,
-        diet_price: diet_price,
+        price: hasil[i].total_cost,
       };
 
       transaction.push(tempTrans);
