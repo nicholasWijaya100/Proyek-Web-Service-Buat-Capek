@@ -17,6 +17,10 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false
       },
+      total_cost: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

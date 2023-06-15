@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     exchanged_hits: {
         type: DataTypes.STRING,
         allowNull: false
-    }
+    },
   }, 
   {
     sequelize,

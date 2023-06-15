@@ -454,14 +454,34 @@ const diet = async (req, res) => {
     }
 };
 
+async function checkUserHasEnoughMoneyAndDietId(id_diet, helpers, username) {
+  let diet = await Diet.findOne({
+    where: {
+      diet_id: id_diet,
+      deletedAt: {
+        [Op.is]: null,
+      },
+    },
+  });
+  let user = await User.findOne({
+    where: {
+      username: username,
+    }
+  })
+  if (diet == null) throw new Error("menu set not found");
+  else if(user.saldo < diet.diet_price + 2000) throw new Error("User does not have enough money to buy diet");
+  else return true;
+}
+
 const buyDiet = async (req, res) => {
+  let id_diet = req.body.id_diet;
   let userdata = req.body.user;
 
   const schema = Joi.object({
-    id_diet: Joi.string().external(checkDietById).required(),
+    id_diet: Joi.string().external((value, helpers) => {
+      return checkUserHasEnoughMoneyAndDietId(value, helpers, userdata.username);
+    }).required(),
   }).options({ stripUnknown: true });
-
-  var id_diet = req.body.id_diet;
 
   try {
     await schema.validateAsync(req.body);
@@ -469,9 +489,24 @@ const buyDiet = async (req, res) => {
     return res.status(403).send(error.toString());
   }
 
+  let boughtDiet = await Diet.findOne({
+    where: {
+      diet_id: id_diet,
+      deletedAt: {
+        [Op.is]: null,
+      },
+    },
+  });
+
+  User.update(
+    { saldo: parseInt(userdata.saldo) - parseInt(boughtDiet.diet_price) - 2000 },
+    { where: { username: userdata.username } }
+  );
+
   var transkasibaru = HistoryTransaction.build({
     username: userdata.username,
     diet_id: id_diet,
+    total_cost: parseInt(boughtDiet.diet_price) + 2000,
   });
   await transkasibaru.save();
 
