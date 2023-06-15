@@ -3,11 +3,11 @@ const { Sequelize, Op } = require("sequelize");
 const { User, MenuSet, Diet } = require("../models");
 const axios = require("axios");
 const Joi = require("joi");
-var jwt = require('jsonwebtoken');
+var jwt = require("jsonwebtoken");
 const user = require("../models/user");
 
 const ApiKey = "5598ef16d03246a18be2d241f48e9009";
-const JWT_KEY = 'KimJisoo';
+const JWT_KEY = "KimJisoo";
 
 // =============================================================================
 
@@ -42,10 +42,10 @@ const menuSet = async (req, res) => {
   }
 
   var userdata = req.body.user;
-  
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
+
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
   let menu = [];
   let totalCalories = 0;
   for (let i = 0; i < menu_list.length; i++) {
@@ -80,7 +80,7 @@ const menuSet = async (req, res) => {
       menu_set_name: menu_set_name,
       menu_content: JSON.stringify(menu),
       menu_set_total_calories: totalCalories,
-      menu_set_maker: userdata.username
+      menu_set_maker: userdata.username,
     });
   } catch (error) {
     return res.status(400).send({
@@ -147,15 +147,21 @@ const diet = async (req, res) => {
 
   const schema = Joi.object({
     diet_name: Joi.string().external(checkDietName).required(),
-    breakfast: Joi.string().external((value, helpers) => {
-      return checkMenuSetAddDiet(value, helpers, userdata.username);
-    }).required(),
-    lunch: Joi.string().external((value, helpers) => {
-      return checkMenuSetAddDiet(value, helpers, userdata.username);
-    }).required(),
-    dinner: Joi.string().external((value, helpers) => {
-      return checkMenuSetAddDiet(value, helpers, userdata.username);
-    }).required(),
+    breakfast: Joi.string()
+      .external((value, helpers) => {
+        return checkMenuSetAddDiet(value, helpers, userdata.username);
+      })
+      .required(),
+    lunch: Joi.string()
+      .external((value, helpers) => {
+        return checkMenuSetAddDiet(value, helpers, userdata.username);
+      })
+      .required(),
+    dinner: Joi.string()
+      .external((value, helpers) => {
+        return checkMenuSetAddDiet(value, helpers, userdata.username);
+      })
+      .required(),
     diet_price: Joi.number().min(0).required(),
   }).options({ stripUnknown: true });
 
@@ -165,11 +171,11 @@ const diet = async (req, res) => {
     return res.status(403).send(error.toString());
   }
 
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
 
-  try{
+  try {
     let dietContent = [];
     let totalCalories = 0;
     let meal = [
@@ -218,7 +224,7 @@ const diet = async (req, res) => {
       diet_calories: totalCalories,
       diet_content: dietContent,
     });
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -251,13 +257,15 @@ const deleteMenu = async (req, res) => {
   }
 
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
-  try{
-    var cekIfMenuSetBelongsToUser = await MenuSet.findAll({ where: { menu_set_maker: userdata.username, menu_set_id: id_menu_set } });
-    if(cekIfMenuSetBelongsToUser.length == 0) {
-      return res.status(403).json('Unauthorized access');
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
+  try {
+    var cekIfMenuSetBelongsToUser = await MenuSet.findAll({
+      where: { menu_set_maker: userdata.username, menu_set_id: id_menu_set },
+    });
+    if (cekIfMenuSetBelongsToUser.length == 0) {
+      return res.status(403).json("Unauthorized access");
     }
     if (delete_if_used == "false") {
       let diet = await Diet.findOne({
@@ -269,7 +277,9 @@ const deleteMenu = async (req, res) => {
         paranoid: false,
       });
       if (diet == null) {
-        let set = await MenuSet.destroy({ where: { menu_set_id: id_menu_set } });
+        let set = await MenuSet.destroy({
+          where: { menu_set_id: id_menu_set },
+        });
         return res.status(200).send("Successfully deleted");
       } else {
         return res
@@ -289,7 +299,7 @@ const deleteMenu = async (req, res) => {
       let set = await MenuSet.destroy({ where: { menu_set_id: id_menu_set } });
       return res.status(200).send("Successfully Deleted");
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -322,19 +332,21 @@ const deleteDiet = async (req, res) => {
   }
 
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
-  try{
-    var cekIfDietBelongsToUser = await Diet.findAll({ where: { diet_maker: userdata.username, diet_id: id_diet } });
-    if(cekIfDietBelongsToUser.length == 0) {
-      return res.status(403).json('Unauthorized access');
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
+  try {
+    var cekIfDietBelongsToUser = await Diet.findAll({
+      where: { diet_maker: userdata.username, diet_id: id_diet },
+    });
+    if (cekIfDietBelongsToUser.length == 0) {
+      return res.status(403).json("Unauthorized access");
     }
-    
+
     const result = await Diet.destroy({ where: { diet_id: id_diet } });
 
     return res.status(200).json("Successfully deleted");
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -374,9 +386,9 @@ async function getMenuByNutriens(req, res, query, param) {
 
 const getMenu = async (req, res) => {
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
 
   let {
     id_menu,
@@ -410,7 +422,7 @@ const getMenu = async (req, res) => {
     return res.status(403).send(error.toString());
   }
 
-  try{
+  try {
     let menu = [];
     if (id_menu != undefined) {
       try {
@@ -471,7 +483,7 @@ const getMenu = async (req, res) => {
         menu,
       });
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -516,10 +528,10 @@ const getSet = async (req, res) => {
   }
 
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
-  try{
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
+  try {
     if (
       id_menu_set == undefined &&
       nama_menu_set == undefined &&
@@ -539,12 +551,14 @@ const getSet = async (req, res) => {
           total_calories: set[i].menu_set_total_calories,
           menu_content: JSON.parse(set[i].menu_content),
         };
-        if(tempResult.menu_set_maker == userdata.username) {
+        if (tempResult.menu_set_maker == userdata.username) {
           result.push(tempResult);
         }
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
@@ -555,8 +569,10 @@ const getSet = async (req, res) => {
           menu_set_maker: userdata.username,
         },
       });
-      if(set.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (set.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({
           id_menu_set: set[0].menu_set_id,
@@ -583,8 +599,10 @@ const getSet = async (req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
@@ -606,8 +624,10 @@ const getSet = async (req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
@@ -628,8 +648,10 @@ const getSet = async (req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
@@ -650,8 +672,10 @@ const getSet = async (req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
@@ -672,13 +696,15 @@ const getSet = async (req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -720,13 +746,15 @@ const updateSet = async (req, res) => {
   }
 
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
-  try{
-    var cekIfMenuSetBelongsToUser = await MenuSet.findAll({ where: { menu_set_maker: userdata.username, menu_set_id: id_menu_set } });
-    if(cekIfMenuSetBelongsToUser.length == 0) {
-      return res.status(403).json('Unauthorized access');
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
+  try {
+    var cekIfMenuSetBelongsToUser = await MenuSet.findAll({
+      where: { menu_set_maker: userdata.username, menu_set_id: id_menu_set },
+    });
+    if (cekIfMenuSetBelongsToUser.length == 0) {
+      return res.status(403).json("Unauthorized access");
     }
 
     if (action == "add") {
@@ -809,7 +837,7 @@ const updateSet = async (req, res) => {
       );
       return res.status(200).send("Successfully updated");
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -844,13 +872,15 @@ const updateDiet = async (req, res) => {
   }
 
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
-  try{
-    var cekIfDietBelongsToUser = await Diet.findAll({ where: { diet_maker: userdata.username, diet_id: id_diet } });
-    if(cekIfDietBelongsToUser.length == 0) {
-      return res.status(403).json('Unauthorized access');
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
+  try {
+    var cekIfDietBelongsToUser = await Diet.findAll({
+      where: { diet_maker: userdata.username, diet_id: id_diet },
+    });
+    if (cekIfDietBelongsToUser.length == 0) {
+      return res.status(403).json("Unauthorized access");
     }
 
     let dietContent = [];
@@ -890,7 +920,7 @@ const updateDiet = async (req, res) => {
       }
     );
     return res.status(200).send("Successfully updated");
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
@@ -898,7 +928,7 @@ const updateDiet = async (req, res) => {
 
 // =============================================================================
 
-const getDiet = async(req, res) => {
+const getDiet = async (req, res) => {
   let { id_diet, nama_diet, min_calories, max_calories } = req.query;
 
   const schema = Joi.object({
@@ -915,19 +945,21 @@ const getDiet = async(req, res) => {
   }
 
   let userdata = req.body.user;
-  if(userdata.role != "consultant") {
-    return res.status(403).json('Unauthorized access');
-  } 
-  try{
-    if(!(id_diet == "" || id_diet == undefined || id_diet == null)) {
+  if (userdata.role != "consultant") {
+    return res.status(403).json("Unauthorized access");
+  }
+  try {
+    if (!(id_diet == "" || id_diet == undefined || id_diet == null)) {
       let set = await Diet.findAll({
         where: {
           diet_id: id_diet,
           diet_maker: userdata.username,
         },
       });
-      if(set.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (set.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({
           id_diet: set[0].diet_id,
@@ -936,9 +968,17 @@ const getDiet = async(req, res) => {
           diet_content: JSON.parse(set[0].diet_content),
         });
       }
-    } else if(!(nama_diet == "" || nama_diet == undefined || nama_diet == null)) {
-      if((max_calories == "" || max_calories == undefined || max_calories == null) && 
-      (min_calories == "" || min_calories == undefined || min_calories == null)) {
+    } else if (
+      !(nama_diet == "" || nama_diet == undefined || nama_diet == null)
+    ) {
+      if (
+        (max_calories == "" ||
+          max_calories == undefined ||
+          max_calories == null) &&
+        (min_calories == "" ||
+          min_calories == undefined ||
+          min_calories == null)
+      ) {
         let set = await Diet.findAll({
           where: {
             diet_name: { [Op.like]: nama_diet },
@@ -955,12 +995,18 @@ const getDiet = async(req, res) => {
           };
           result.push(tempResult);
         }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "Oops it seems we didn't find anything" });
         } else {
           return res.status(200).json({ result });
         }
-      } else if(max_calories == "" || max_calories == undefined || max_calories == null) {
+      } else if (
+        max_calories == "" ||
+        max_calories == undefined ||
+        max_calories == null
+      ) {
         let set = await Diet.findAll({
           where: {
             diet_name: { [Op.like]: nama_diet },
@@ -978,12 +1024,18 @@ const getDiet = async(req, res) => {
           };
           result.push(tempResult);
         }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "Oops it seems we didn't find anything" });
         } else {
           return res.status(200).json({ result });
         }
-      } else if(min_calories == "" || min_calories == undefined || min_calories == null) {
+      } else if (
+        min_calories == "" ||
+        min_calories == undefined ||
+        min_calories == null
+      ) {
         let set = await Diet.findAll({
           where: {
             diet_name: { [Op.like]: nama_diet },
@@ -1001,8 +1053,10 @@ const getDiet = async(req, res) => {
           };
           result.push(tempResult);
         }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "Oops it seems we didn't find anything" });
         } else {
           return res.status(200).json({ result });
         }
@@ -1025,14 +1079,22 @@ const getDiet = async(req, res) => {
           };
           result.push(tempResult);
         }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "Oops it seems we didn't find anything" });
         } else {
           return res.status(200).json({ result });
         }
       }
-    } else if(!(min_calories == "" || min_calories == undefined || min_calories == null)) {
-      if(max_calories == "" || max_calories == undefined || max_calories == null) {
+    } else if (
+      !(min_calories == "" || min_calories == undefined || min_calories == null)
+    ) {
+      if (
+        max_calories == "" ||
+        max_calories == undefined ||
+        max_calories == null
+      ) {
         let set = await Diet.findAll({
           where: {
             diet_total_calories: { [Op.gte]: min_calories },
@@ -1049,8 +1111,10 @@ const getDiet = async(req, res) => {
           };
           result.push(tempResult);
         }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "Oops it seems we didn't find anything" });
         } else {
           return res.status(200).json({ result });
         }
@@ -1072,13 +1136,17 @@ const getDiet = async(req, res) => {
           };
           result.push(tempResult);
         }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+        if (result.length == 0) {
+          return res
+            .status(400)
+            .json({ msg: "Oops it seems we didn't find anything" });
         } else {
           return res.status(200).json({ result });
         }
       }
-    } else if(!(max_calories == "" || max_calories == undefined || max_calories == null)) {
+    } else if (
+      !(max_calories == "" || max_calories == undefined || max_calories == null)
+    ) {
       let set = await Diet.findAll({
         where: {
           diet_total_calories: { [Op.lte]: max_calories },
@@ -1095,8 +1163,10 @@ const getDiet = async(req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
@@ -1116,17 +1186,19 @@ const getDiet = async(req, res) => {
         };
         result.push(tempResult);
       }
-      if(result.length == 0) {
-        return res.status(200).json({msg: "Oops it seems we didn't find anything"});
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
       } else {
         return res.status(200).json({ result });
       }
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error);
   }
-} 
+};
 
 // =============================================================================
 

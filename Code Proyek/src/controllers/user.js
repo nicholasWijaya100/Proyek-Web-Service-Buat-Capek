@@ -1,16 +1,23 @@
 const Joi = require("joi").extend(require("@joi/date"));
-var jwt = require('jsonwebtoken');
+var jwt = require("jsonwebtoken");
 const sequelize = require("../databases/conn");
 const mod_users = require("../models/user");
-const { User, MenuSet, Diet, TopupHistory, HistoryTransaction, RechargeHistory } = require("../models");
+const {
+  User,
+  MenuSet,
+  Diet,
+  TopupHistory,
+  HistoryTransaction,
+  RechargeHistory,
+} = require("../models");
 const { useInflection } = require("sequelize");
 const { where } = require("sequelize");
 const { Op } = require("sequelize");
-const JWT_KEY = 'KimJisoo';
+const JWT_KEY = "KimJisoo";
 
 async function checkDietById(id) {
-  if(id == undefined || id == "" || id == null) {
-    return true
+  if (id == undefined || id == "" || id == null) {
+    return true;
   } else {
     let set = await Diet.findOne({
       where: {
@@ -23,8 +30,8 @@ async function checkDietById(id) {
 }
 
 async function checkDietByName(name) {
-  if(name == undefined || name == "" || name == null) {
-    return true
+  if (name == undefined || name == "" || name == null) {
+    return true;
   } else {
     let set = await Diet.findOne({
       where: {
@@ -59,7 +66,7 @@ const register = async (req, res) => {
     var body_height = req.body.body_height;
     var target_weight = req.body.target_weight;
     var role = req.body.role;
-    var profile_picture = req.file.filename; 
+    var profile_picture = req.file.filename;
 
     var arrbirth = birth_date.split("/");
     birth_date = arrbirth[2] + "-" + arrbirth[1] + "-" + arrbirth[0];
@@ -125,11 +132,15 @@ const login = async (req, res) => {
 
     if (cekuser.length > 0) {
       if (username == cekuser[0].username && password == cekuser[0].password) {
-        try{
-          let token = jwt.sign({
-            'username': username,
-            'role': cekuser[0].role,
-          }, JWT_KEY, {expiresIn: '7000s'});
+        try {
+          let token = jwt.sign(
+            {
+              username: username,
+              role: cekuser[0].role,
+            },
+            JWT_KEY,
+            { expiresIn: "7000s" }
+          );
 
           return res.status(200).json({
             username: cekuser[0].username,
@@ -140,7 +151,7 @@ const login = async (req, res) => {
             birth_date: cekuser[0].birth_date,
             token: token,
           });
-        } catch(error) {
+        } catch (error) {
           return res.status(400).json("Error: " + error);
         }
       } else {
@@ -171,7 +182,7 @@ const updateUserData = async (req, res) => {
     if (body_weight != "") {
       User.update(
         { body_weight: req.body.body_weight },
-        { where: { username: userdata.username} }
+        { where: { username: userdata.username } }
       );
     }
     if (body_height != "") {
@@ -183,7 +194,7 @@ const updateUserData = async (req, res) => {
     if (target_weight != "") {
       User.update(
         { target_weight: req.body.target_weight },
-        { where: { username: userdata.username} }
+        { where: { username: userdata.username } }
       );
     }
     return res.status(200).json("Berhasil Update data");
@@ -199,11 +210,11 @@ const updatePassword = async (req, res) => {
 
   var cek = Joi.object({
     new_password: Joi.string().required(),
-    confirm_new_password: Joi.ref('new_password')
+    confirm_new_password: Joi.ref("new_password"),
   }).options({ stripUnknown: true });
-  try{
+  try {
     await cek.validateAsync(req.body);
-  }catch(error){
+  } catch (error) {
     console.log(error);
     return res.status(500).json(error.message);
   }
@@ -224,11 +235,13 @@ const topup = async (req, res) => {
     await cek.validateAsync(req.body);
     var topup = req.body.topup;
     var userdata = req.body.user;
-    try{
-      var cekuser = await User.findAll({ where: { username: userdata.username } });
-      if(cekuser.length <= 0) {
+    try {
+      var cekuser = await User.findAll({
+        where: { username: userdata.username },
+      });
+      if (cekuser.length <= 0) {
         res.status(400).send({ msg: "User not registered in database" });
-      } else if(topup <= 0) {
+      } else if (topup <= 0) {
         res.status(400).send({ msg: "Minimal topup must be at least $1" });
       } else {
         User.update(
@@ -247,7 +260,7 @@ const topup = async (req, res) => {
           saldo: parseInt(cekuser[0].saldo) + parseInt(req.body.topup),
         });
       }
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return res.status(400).json(error.message);
     }
@@ -271,11 +284,13 @@ const recharge = async (req, res) => {
   var recharge = req.body.recharge;
   var userdata = req.body.user;
 
-  try{
-    var cekuser = await User.findAll({ where: { username: userdata.username } });
-    if(cekuser.length <= 0) {
+  try {
+    var cekuser = await User.findAll({
+      where: { username: userdata.username },
+    });
+    if (cekuser.length <= 0) {
       res.status(400).json({ msg: "User not registered in database" });
-    } else if(recharge > cekuser[0].saldo) {
+    } else if (recharge > cekuser[0].saldo) {
       res.status(400).json({ msg: "Insufficient account balance" });
     } else {
       var biaya = recharge * 10000;
@@ -291,7 +306,7 @@ const recharge = async (req, res) => {
       var rechargehistorybaru = RechargeHistory.build({
         username: userdata.username,
         cash_used: biaya,
-        exchanged_hits: recharge
+        exchanged_hits: recharge,
       });
       await rechargehistorybaru.save();
 
@@ -302,25 +317,27 @@ const recharge = async (req, res) => {
         kuota: parseInt(cekuser[0].api_hit) + parseInt(req.body.recharge),
       });
     }
-  } catch(error) {
+  } catch (error) {
     console.log(error);
     return res.status(400).json(error.message);
   }
 };
 
 const getTopupHistory = async (req, res) => {
-  let userdata = req.body.user
+  let userdata = req.body.user;
   try {
     var user = await User.findAll({ where: { username: userdata.username } });
-      var userTopupHistory = await TopupHistory.findAll({ where: { username: userdata.username } });
-      var output = [];
-      for(var i = 0; i < userTopupHistory.length; i++) {
-        output.push({
-          amount: userTopupHistory[i].amount,
-          topup_at: userTopupHistory[i].createdAt
-        });
-      }
-      return res.status(200).json(output);
+    var userTopupHistory = await TopupHistory.findAll({
+      where: { username: userdata.username },
+    });
+    var output = [];
+    for (var i = 0; i < userTopupHistory.length; i++) {
+      output.push({
+        amount: userTopupHistory[i].amount,
+        topup_at: userTopupHistory[i].createdAt,
+      });
+    }
+    return res.status(200).json(output);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error.message);
@@ -328,130 +345,141 @@ const getTopupHistory = async (req, res) => {
 };
 
 const getRechargeHistory = async (req, res) => {
-    let userdata = req.body.user
-    try{
-      var user = await User.findAll({ where: { username: userdata.username } });
-      if(user.length == 0) {
-        res.status(400).json({ msg: "User not registered in database" })
-      } else {
-        var userRechargeHistory = await RechargeHistory.findAll({ where: { username: userdata.username } });
-        var output = [];
-        for(var i = 0; i < userRechargeHistory.length; i++) {
-          output.push({
-            cost_of_recharge: userRechargeHistory[i].cash_used,
-            api_hits_exchanged: userRechargeHistory[i].exchanged_hits,
-            recharged_at: userRechargeHistory[i].createdAt
-          });
-        }
-        return res.status(200).json(output);
+  let userdata = req.body.user;
+  try {
+    var user = await User.findAll({ where: { username: userdata.username } });
+    if (user.length == 0) {
+      res.status(400).json({ msg: "User not registered in database" });
+    } else {
+      var userRechargeHistory = await RechargeHistory.findAll({
+        where: { username: userdata.username },
+      });
+      var output = [];
+      for (var i = 0; i < userRechargeHistory.length; i++) {
+        output.push({
+          cost_of_recharge: userRechargeHistory[i].cash_used,
+          api_hits_exchanged: userRechargeHistory[i].exchanged_hits,
+          recharged_at: userRechargeHistory[i].createdAt,
+        });
       }
-    } catch(error) {
-      console.log(error);
-      return res.status(500).json(error.message);
+      return res.status(200).json(output);
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
 };
 
 const diet = async (req, res) => {
-    let userdata = req.body.user;
-    try{
-      let { id_diet, nama_diet } = req.query;
+  let userdata = req.body.user;
+  try {
+    let { id_diet, nama_diet } = req.query;
 
-      const schema = Joi.object({
-        id_diet: Joi.string(),
-        nama_diet: Joi.string(),
-      }).options({ stripUnknown: true });
+    const schema = Joi.object({
+      id_diet: Joi.string(),
+      nama_diet: Joi.string(),
+    }).options({ stripUnknown: true });
 
-      try {
-        await schema.validateAsync(req.query);
-      } catch (error) {
-        return res.status(403).send(error.toString());
-      }
+    try {
+      await schema.validateAsync(req.query);
+    } catch (error) {
+      return res.status(403).send(error.toString());
+    }
 
-      var currentDate = new Date();
-      const calorie_to_maintain_weight = userdata.body_weight * 10 + userdata.body_height * 6.25 - 5 * (currentDate.getFullYear() - userdata.birth_date.getFullYear());
-      if(id_diet == undefined && nama_diet == undefined) {
-        let set = "";
-        if(userdata.target_weight > userdata.body_weight) {
-          set = await Diet.findAll({
-            where: {
-              diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
-            },
-          });
-        } else {
-          set = await Diet.findAll({
-            where: {
-              diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
-            },
-          });
-        }
-        let result = [];
-        for (let i = 0; i < set.length; i++) {
-          let tempResult = {
-            id_diet: set[i].diet_id,
-            nama_diet: set[i].diet_name,
-            total_calories: set[i].diet_total_calories,
-            diet_content: JSON.parse(set[i].diet_content),
-          };
-          result.push(tempResult);
-        }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
-        } else {
-          return res.status(200).json({ result });
-        }
-      } else if(id_diet != undefined) {
-        let set = await Diet.findAll({
+    var currentDate = new Date();
+    const calorie_to_maintain_weight =
+      userdata.body_weight * 10 +
+      userdata.body_height * 6.25 -
+      5 * (currentDate.getFullYear() - userdata.birth_date.getFullYear());
+    if (id_diet == undefined && nama_diet == undefined) {
+      let set = "";
+      if (userdata.target_weight > userdata.body_weight) {
+        set = await Diet.findAll({
           where: {
-            diet_id: id_diet,
+            diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
           },
         });
-        if(set.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
-        } else {
-          return res.status(200).json({
-            id_diet: set[0].diet_id,
-            nama_diet: set[0].diet_name,
-            total_calories: set[0].diet_total_calories,
-            diet_content: JSON.parse(set[0].diet_content),
-          });
-        }
-      } else if(nama_diet != undefined) {
-        let set = "";
-        if(userdata.target_weight > userdata.body_weight) {
-          set = await Diet.findAll({
-            where: {
-              diet_name: { [Op.like]: `%${nama_diet}%` },
-              diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
-            },
-          });
-        } else {
-          set = await Diet.findAll({
-            where: {
-              diet_name: { [Op.like]: `%${nama_diet}%` },
-              diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
-            },
-          });
-        }
-        let result = [];
-        for (let i = 0; i < set.length; i++) {
-          let tempResult = {
-            id_diet: set[i].diet_id,
-            nama_diet: set[i].diet_name,
-            total_calories: set[i].diet_total_calories,
-            diet_content: JSON.parse(set[i].diet_content),
-          };
-          result.push(tempResult);
-        }
-        if(result.length == 0) {
-          return res.status(200).json({msg: "Oops it seems we didn't find anything"});
-        } else {
-          return res.status(200).json({ result });
-        }
+      } else {
+        set = await Diet.findAll({
+          where: {
+            diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
+          },
+        });
       }
-    } catch(error) {
-      console.log(error);
-      return res.status(500).json(error.message);
+      let result = [];
+      for (let i = 0; i < set.length; i++) {
+        let tempResult = {
+          id_diet: set[i].diet_id,
+          nama_diet: set[i].diet_name,
+          total_calories: set[i].diet_total_calories,
+          diet_content: JSON.parse(set[i].diet_content),
+        };
+        result.push(tempResult);
+      }
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
+      } else {
+        return res.status(200).json({ result });
+      }
+    } else if (id_diet != undefined) {
+      let set = await Diet.findAll({
+        where: {
+          diet_id: id_diet,
+        },
+      });
+      if (set.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
+      } else {
+        return res.status(200).json({
+          id_diet: set[0].diet_id,
+          nama_diet: set[0].diet_name,
+          total_calories: set[0].diet_total_calories,
+          diet_content: JSON.parse(set[0].diet_content),
+        });
+      }
+    } else if (nama_diet != undefined) {
+      let set = "";
+      if (userdata.target_weight > userdata.body_weight) {
+        set = await Diet.findAll({
+          where: {
+            diet_name: { [Op.like]: `%${nama_diet}%` },
+            diet_total_calories: { [Op.gte]: calorie_to_maintain_weight },
+          },
+        });
+      } else {
+        set = await Diet.findAll({
+          where: {
+            diet_name: { [Op.like]: `%${nama_diet}%` },
+            diet_total_calories: { [Op.lte]: calorie_to_maintain_weight },
+          },
+        });
+      }
+      let result = [];
+      for (let i = 0; i < set.length; i++) {
+        let tempResult = {
+          id_diet: set[i].diet_id,
+          nama_diet: set[i].diet_name,
+          total_calories: set[i].diet_total_calories,
+          diet_content: JSON.parse(set[i].diet_content),
+        };
+        result.push(tempResult);
+      }
+      if (result.length == 0) {
+        return res
+          .status(400)
+          .json({ msg: "Oops it seems we didn't find anything" });
+      } else {
+        return res.status(200).json({ result });
+      }
     }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error.message);
+  }
 };
 
 async function checkUserHasEnoughMoneyAndDietId(id_diet, helpers, username) {
@@ -466,10 +494,11 @@ async function checkUserHasEnoughMoneyAndDietId(id_diet, helpers, username) {
   let user = await User.findOne({
     where: {
       username: username,
-    }
-  })
+    },
+  });
   if (diet == null) throw new Error("menu set not found");
-  else if(user.saldo < diet.diet_price + 2000) throw new Error("User does not have enough money to buy diet");
+  else if (user.saldo < diet.diet_price + 2000)
+    throw new Error("User does not have enough money to buy diet");
   else return true;
 }
 
@@ -479,9 +508,15 @@ const buyDiet = async (req, res) => {
   const adminFee = 2000;
 
   const schema = Joi.object({
-    id_diet: Joi.string().external((value, helpers) => {
-      return checkUserHasEnoughMoneyAndDietId(value, helpers, userdata.username);
-    }).required(),
+    id_diet: Joi.string()
+      .external((value, helpers) => {
+        return checkUserHasEnoughMoneyAndDietId(
+          value,
+          helpers,
+          userdata.username
+        );
+      })
+      .required(),
   }).options({ stripUnknown: true });
 
   try {
@@ -500,7 +535,10 @@ const buyDiet = async (req, res) => {
   });
 
   User.update(
-    { saldo: parseInt(userdata.saldo) - parseInt(boughtDiet.diet_price) - adminFee },
+    {
+      saldo:
+        parseInt(userdata.saldo) - parseInt(boughtDiet.diet_price) - adminFee,
+    },
     { where: { username: userdata.username } }
   );
 
@@ -512,7 +550,7 @@ const buyDiet = async (req, res) => {
   await transkasibaru.save();
 
   res.status(201).json("Transaction Successful");
-}
+};
 
 const getTransactionHistory = async (req, res) => {
   var userdata = req.body.user;
@@ -538,9 +576,11 @@ const getTransactionHistory = async (req, res) => {
         },
       });
       var diet_name = hasil_diet[0].diet_name;
+      var diet_price = hasil_diet[0].diet_price;
       var tempTrans = {
         transaction_id: transaction_id,
         diet_name: diet_name,
+        diet_price: diet_price,
       };
 
       transaction.push(tempTrans);
@@ -580,26 +620,26 @@ const userInformation = async (req, res) => {
       "Api Hit": api_hit,
     })
     .sendFile(lokasinya, { root: "." });
-  };
+};
 
-  const getProfpic = async (req, res) => {
-    var token = req.header("x-auth-token");
-    var userdata;
-    if (!req.header("x-auth-token")) {
-      res.status(400).json("Authentication token is missing");
-    } else {
-      try {
-        userdata = jwt.verify(token, JWT_KEY);
-      } catch (error) {
-        console.log(error);
-        return res.status(400).json(error.message);
-      }
-      const pengguna_nama = userdata.username;
-      console.log(pengguna_nama);
-      const lokasinya = `./src/uploads/${pengguna_nama}.jpg`;
-      return res.status(200).sendFile(lokasinya, { root: "." });
+const getProfpic = async (req, res) => {
+  var token = req.header("x-auth-token");
+  var userdata;
+  if (!req.header("x-auth-token")) {
+    res.status(400).json("Authentication token is missing");
+  } else {
+    try {
+      userdata = jwt.verify(token, JWT_KEY);
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json(error.message);
     }
-  };
+    const pengguna_nama = userdata.username;
+    console.log(pengguna_nama);
+    const lokasinya = `./src/uploads/${pengguna_nama}.jpg`;
+    return res.status(200).sendFile(lokasinya, { root: "." });
+  }
+};
 
 module.exports = {
   register,
