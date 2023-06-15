@@ -113,6 +113,21 @@ async function checkMenuSet(id) {
   else return true;
 }
 
+async function checkMenuSetAddDiet(id, helpers, username) {
+  let set = await MenuSet.findOne({
+    where: {
+      menu_set_maker: username,
+      menu_set_id: id,
+      deletedAt: {
+        [Op.is]: null,
+      },
+    },
+  });
+  console.log(set);
+  if (set == null) throw new Error("menu set not found");
+  else return true;
+}
+
 async function checkDietName(name) {
   let set = await Diet.findOne({
     where: {
@@ -128,12 +143,19 @@ async function checkDietName(name) {
 
 const diet = async (req, res) => {
   let { diet_name, breakfast, lunch, dinner, diet_price } = req.body;
+  let userdata = req.body.user;
 
   const schema = Joi.object({
     diet_name: Joi.string().external(checkDietName).required(),
-    breakfast: Joi.string().external(checkMenuSet).required(),
-    lunch: Joi.string().external(checkMenuSet).required(),
-    dinner: Joi.string().external(checkMenuSet).required(),
+    breakfast: Joi.string().external((value, helpers) => {
+      return checkMenuSetAddDiet(value, helpers, userdata.username);
+    }).required(),
+    lunch: Joi.string().external((value, helpers) => {
+      return checkMenuSetAddDiet(value, helpers, userdata.username);
+    }).required(),
+    dinner: Joi.string().external((value, helpers) => {
+      return checkMenuSetAddDiet(value, helpers, userdata.username);
+    }).required(),
     diet_price: Joi.number().min(0).required(),
   }).options({ stripUnknown: true });
 
@@ -143,10 +165,10 @@ const diet = async (req, res) => {
     return res.status(403).send(error.toString());
   }
 
-  let userdata = req.body.user;
   if(userdata.role != "consultant") {
     return res.status(403).json('Unauthorized access');
   } 
+
   try{
     let dietContent = [];
     let totalCalories = 0;
