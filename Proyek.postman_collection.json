@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5d153412-7c23-4beb-ad95-165b21b61070",
+		"_postman_id": "74c9135f-66d8-4a6e-bff6-303566df75fb",
 		"name": "Proyek",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -12,10 +12,16 @@
 					"name": "Add Menu Set",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"menu_set_name\" : \"new_name\",\r\n    \"menu_list\": [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"424571\",\r\n            \"qty\" : \"1\"\r\n        },\r\n        {\r\n            \"id\" : \"419357\",\r\n            \"qty\" : \"3\"\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"menu_set_name\" : \"hhssedd\",\r\n    \"menu_list\": [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"424571\",\r\n            \"qty\" : \"1\"\r\n        },\r\n        {\r\n            \"id\" : \"419357\",\r\n            \"qty\" : \"3\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -23,10 +29,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{HOST}}/v1/admin/menu_set",
+							"raw": "http://localhost:3000/v1/admin/menu_set",
+							"protocol": "http",
 							"host": [
-								"{{HOST}}"
+								"localhost"
 							],
+							"port": "3000",
 							"path": [
 								"v1",
 								"admin",
@@ -43,7 +51,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNDM3NTAsImV4cCI6MTY4NTM1MDc1MH0.vNxFeW7lDdXPS0DIxdIt-5ZANIlRS83_efVtjkMyTFs",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
 								"type": "default"
 							}
 						],
@@ -76,7 +84,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjQxNTM2LCJleHAiOjE2ODY2NDg1MzZ9.qRU-O3be_SG6JPYam5LfkCg045OZg8pnSaZz4B_IWV8",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODEzMzc4LCJleHAiOjE2ODY4MjAzNzh9.xMkp8dPlfFGdb1qWmcoVC0zLvz2BVnexvuWPRsmcRHY",
 								"type": "default"
 							}
 						],
@@ -85,7 +93,7 @@
 							"urlencoded": [
 								{
 									"key": "diet_name",
-									"value": "diet1",
+									"value": "dsnjvjsdsdd",
 									"type": "text"
 								},
 								{
@@ -95,13 +103,18 @@
 								},
 								{
 									"key": "lunch",
-									"value": "MS002",
+									"value": "MS003",
 									"type": "text"
 								},
 								{
 									"key": "dinner",
 									"value": "MS003",
 									"type": "text"
+								},
+								{
+									"key": "diet_price",
+									"value": "45000",
+									"type": "default"
 								}
 							]
 						},
@@ -128,7 +141,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNDM3NTAsImV4cCI6MTY4NTM1MDc1MH0.vNxFeW7lDdXPS0DIxdIt-5ZANIlRS83_efVtjkMyTFs",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
 								"type": "default"
 							}
 						],
@@ -156,12 +169,12 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlhpIEppbnBpbmciLCJyb2xlIjoiY29uc3VsdGFudCIsImlhdCI6MTY4NTM0ODk3MCwiZXhwIjoxNjg1MzU1OTcwfQ.totlQB0ehB6iUsFbKXQwRP_peGjmPY6NE72Ym_dNkfg",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
 								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/v1/admin/menu_set?id_menu_set=MS003",
+							"raw": "http://localhost:3000/v1/admin/menu_set",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -171,12 +184,6 @@
 								"v1",
 								"admin",
 								"menu_set"
-							],
-							"query": [
-								{
-									"key": "id_menu_set",
-									"value": "MS003"
-								}
 							]
 						}
 					},
@@ -184,24 +191,26 @@
 				},
 				{
 					"name": "Update Menu Set",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNTE3OTIsImV4cCI6MTY4NTM1ODc5Mn0.mIDWmc5laeC-eXcgNIDOFuAVHl7I8VABPdGn3VH0eeo",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
 								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"action\" : \"replace\",\r\n    \"menu_list\" : [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"385239\",\r\n            \"qty\" : \"1\"\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"action\" : \"replace\",\r\n    \"menu_list\" : [\r\n        {\r\n            \"id\" : \"192386\",\r\n            \"qty\" : \"2\"\r\n        },\r\n        {\r\n            \"id\" : \"385239\",\r\n            \"qty\" : \"1\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
 						"url": {
-							"raw": "http://localhost:3000/v1/admin/menu_set/MS004",
+							"raw": "http://localhost:3000/v1/admin/menu_set/MS003",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -211,7 +220,7 @@
 								"v1",
 								"admin",
 								"menu_set",
-								"MS004"
+								"MS003"
 							]
 						}
 					},
@@ -224,7 +233,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlNhZGRhbSBIdXNzZWluIiwicm9sZSI6ImNvbnN1bHRhbnQiLCJpYXQiOjE2ODUzNDM3NTAsImV4cCI6MTY4NTM1MDc1MH0.vNxFeW7lDdXPS0DIxdIt-5ZANIlRS83_efVtjkMyTFs",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NzIxODk2LCJleHAiOjE2ODY3Mjg4OTZ9.XQMgI3jpyGSWNMlfg33CNntP8qvP9yqEuwsKPQAORS8",
 								"type": "default"
 							}
 						],
@@ -258,8 +267,70 @@
 				{
 					"name": "Update Diet",
 					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"breakfast\" : \"MS003\",\r\n    \"lunch\" : \"MS003\",\r\n    \"dinner\" : \"MS003\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/admin/diet/D001",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"admin",
+								"diet",
+								"D001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Diet",
+					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/v1/admin/diet?min_calories=1000",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"admin",
+								"diet"
+							],
+							"query": [
+								{
+									"key": "min_calories",
+									"value": "1000"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -319,7 +390,7 @@
 								{
 									"key": "photoprofile",
 									"type": "file",
-									"src": "/C:/Users/nichw/Downloads/move_updown.jpg"
+									"src": "/C:/Users/nichw/Downloads/1685667616028.jpg"
 								}
 							]
 						},
@@ -354,7 +425,7 @@
 								},
 								{
 									"key": "password",
-									"value": "reddy",
+									"value": "famine",
 									"type": "default"
 								}
 							]
@@ -432,7 +503,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODE1ODQxLCJleHAiOjE2ODY4MjI4NDF9.9lgLWsATQg78qy7Wcrwj5I5ugK4Y1QhrwTma5Z3vm9s",
 								"type": "text"
 							}
 						],
@@ -441,7 +512,7 @@
 							"urlencoded": [
 								{
 									"key": "topup",
-									"value": "20000",
+									"value": "200000",
 									"type": "default"
 								}
 							]
@@ -469,7 +540,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODE1ODQxLCJleHAiOjE2ODY4MjI4NDF9.9lgLWsATQg78qy7Wcrwj5I5ugK4Y1QhrwTma5Z3vm9s",
 								"type": "text"
 							}
 						],
@@ -506,7 +577,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjQxNTM2LCJleHAiOjE2ODY2NDg1MzZ9.qRU-O3be_SG6JPYam5LfkCg045OZg8pnSaZz4B_IWV8",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODE1ODQxLCJleHAiOjE2ODY4MjI4NDF9.9lgLWsATQg78qy7Wcrwj5I5ugK4Y1QhrwTma5Z3vm9s",
 								"type": "text"
 							}
 						],
@@ -533,7 +604,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjQxNTM2LCJleHAiOjE2ODY2NDg1MzZ9.qRU-O3be_SG6JPYam5LfkCg045OZg8pnSaZz4B_IWV8",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODE1ODQxLCJleHAiOjE2ODY4MjI4NDF9.9lgLWsATQg78qy7Wcrwj5I5ugK4Y1QhrwTma5Z3vm9s",
 								"type": "text"
 							}
 						],
@@ -603,12 +674,12 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2NjM3NDIxLCJleHAiOjE2ODY2NDQ0MjF9.9AxAUEjOSy4yHV4hIwJMB7MY1NhaqFST73T0DWs-V-Q",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
 								"type": "default"
 							}
 						],
 						"url": {
-							"raw": "http://localhost:3000/v1/user/diet",
+							"raw": "http://localhost:3000/v1/user/diet?nama_diet=",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -618,6 +689,109 @@
 								"v1",
 								"user",
 								"diet"
+							],
+							"query": [
+								{
+									"key": "id_diet",
+									"value": "D001",
+									"disabled": true
+								},
+								{
+									"key": "nama_diet",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buy Diet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODE1ODQxLCJleHAiOjE2ODY4MjI4NDF9.9lgLWsATQg78qy7Wcrwj5I5ugK4Y1QhrwTma5Z3vm9s",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id_diet",
+									"value": "D003",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/v1/user/buy/diet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"buy",
+								"diet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Transaction History",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODE1ODQxLCJleHAiOjE2ODY4MjI4NDF9.9lgLWsATQg78qy7Wcrwj5I5ugK4Y1QhrwTma5Z3vm9s",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/v1/user/transaction_history",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"transaction_history"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Information",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1hbyBaZWRvbiIsInJvbGUiOiJjb25zdWx0YW50IiwiaWF0IjoxNjg2ODA0NDQxLCJleHAiOjE2ODY4MTE0NDF9.8pwlpkOIs5mf-Sz6V1N5VjosLFbJjaGfN6cg6mvdbeM",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/v1/user/userinfo",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"v1",
+								"user",
+								"userinfo"
 							]
 						}
 					},
