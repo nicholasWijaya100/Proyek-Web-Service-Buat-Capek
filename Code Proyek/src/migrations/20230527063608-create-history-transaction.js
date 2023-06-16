@@ -18,7 +18,7 @@ module.exports = {
           allowNull: false
       },
       total_cost: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false
       },
       createdAt: {
